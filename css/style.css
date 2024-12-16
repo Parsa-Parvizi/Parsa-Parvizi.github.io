@@ -887,12 +887,20 @@ h1 {
 
   .logoCol img {
     width: 50px;
+    height: auto;
   }
 
   .fixedHeader .headerCol,
   .headerCol {
     padding: 10px 0;
   }
+}
+
+.logoCol img {
+  width: 50px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 @media(max-width:575px) {
@@ -978,51 +986,33 @@ textarea {
 .scrollToTop {
   position: fixed;
   bottom: 20px;
-  /* فاصله از پایین */
   right: 20px;
-  /* فاصله از چپ */
   width: 50px;
-  /* عرض دکمه */
   height: 50px;
-  /* ارتفاع دکمه */
   border-radius: 50%;
-  /* دایره‌ای کردن دکمه */
   background-color: #3D0048;
-  /* رنگ پس‌زمینه */
   color: white;
-  /* رنگ متن */
   border: none;
-  /* حذف حاشیه */
   font-size: 24px;
-  /* اندازه فونت */
   cursor: pointer;
-  /* تغییر نشانگر ماوس */
   display: flex;
-  /* استفاده از flex برای مرکز کردن محتوا */
   align-items: center;
-  /* مرکز کردن عمودی */
   justify-content: center;
-  /* مرکز کردن افقی */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  /* سایه */
   z-index: 1000;
-  /* قرار دادن دکمه در بالای سایر عناصر */
 }
 
 .scrollToTop:hover {
   background-color: #900AA8;
-  /* تغییر رنگ در حالت hover */
 }
 
 body.scrollActive .scrollToTop {
   display: block;
-  /* نمایش دکمه زمانی که کاربر به پایین صفحه می‌رود */
 }
 
 
 .modal {
   display: none;
-  /* مخفی به طور پیش‌فرض */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -1031,7 +1021,6 @@ body.scrollActive .scrollToTop {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  /* پس‌زمینه نیمه شفاف */
 }
 
 .modal-content {
@@ -1046,43 +1035,30 @@ body.scrollActive .scrollToTop {
 
 .modal-content h2 {
   font-size: 24px;
-  /* اندازه فونت برای عنوان */
   font-weight: bold;
-  /* ضخامت فونت */
   margin-bottom: 10px;
-  /* فاصله پایین */
 }
 
 .modal-content p {
   font-size: 16px;
-  /* اندازه فونت برای پاراگراف */
   margin-bottom: 20px;
-  /* فاصله پایین */
 }
 
 .modal-content .btn {
   padding: 10px 20px;
-  /* فاصله داخلی دکمه */
   font-size: 16px;
-  /* اندازه فونت دکمه */
   border: none;
-  /* حذف مرز */
   border-radius: 5px;
-  /* گوشه‌های گرد */
   cursor: pointer;
-  /* نشانگر ماوس */
 }
 
 .modal-content .btnPrimary {
   background-color: #3D0048;
-  /* رنگ پس‌زمینه دکمه */
   color: white;
-  /* رنگ متن دکمه */
 }
 
 .modal-content .btnPrimary:hover {
   background-color: #900AA8;
-  /* رنگ پس‌زمینه دکمه در حالت هاور */
 }
 
 .close-button {
@@ -1101,13 +1077,9 @@ body.scrollActive .scrollToTop {
 
 .teaching-section {
   padding: 40px 20px;
-  /* Padding for spacing */
   background-color: #f9f9f9;
-  /* Light background color */
   margin: 20px 0;
-  /* Margin to separate from other sections */
   border-radius: 8px;
-  /* Rounded corners */
 }
 
 .section-title {
@@ -1120,49 +1092,36 @@ body.scrollActive .scrollToTop {
   position: relative;
   max-width: 800px;
   margin: 0 auto;
-  /* Center the slider */
   overflow: hidden;
-  /* Hide overflow */
 }
 
 .slide {
   display: none;
-  /* Hide all slides by default */
   padding: 20px;
   text-align: left;
-  /* Align text to the left */
 }
 
 .slide-link {
   text-decoration: none;
-  /* Remove underline from links */
   color: inherit;
-  /* Inherit color from parent */
 }
 
 .slide-content {
   display: flex;
-  /* Use flexbox for layout */
   align-items: center;
-  /* Center items vertically */
 }
 
 .slide-image {
   width: 95px;
-  /* Set width */
   height: 95px;
-  /* Set height */
   margin-right: 60px;
-  /* Space between image and text */
   border-radius: 50%;
-  /* Make image circular */
 
   line-height: normal;
 }
 
 .text-content {
   flex: 1;
-  /* Allow text to take remaining space */
 }
 
 .slider-controls {
@@ -1172,18 +1131,14 @@ body.scrollActive .scrollToTop {
 
 .slider-controls button {
   background-color: #007bff;
-  /* Button color */
   color: white;
-  /* Button text color */
   border: none;
   padding: 10px 15px;
   cursor: pointer;
   border-radius: 5px;
   margin: 0 5px;
-  /* Space between buttons */
 }
 
 .slider-controls button:hover {
   background-color: #0056b3;
-  /* Darker color on hover */
 }
