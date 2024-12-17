@@ -1077,9 +1077,102 @@ body.scrollActive .scrollToTop {
 
 .teaching-section {
   padding: 40px 20px;
-  background-color: #f9f9f9;
+  background-color: #F1F1F1;
   margin: 20px 0;
   border-radius: 8px;
+}
+
+.teaching-section .swiper {
+  padding: 20px 0;
+}
+
+.teaching-section .swiper-slide {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.teaching-section .slide-image {
+  width: 95px;
+  height: 95px;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.teaching-section .text-content {
+  flex: 1;
+}
+
+.teaching-section .swiper-button-next,
+.teaching-section .swiper-button-prev {
+  background-color: var(--primaryColor);
+  /* color: #fff; */
+  border-radius: 50%;
+}
+
+.teaching-section .swiper-pagination {
+  bottom: 10px;
+}
+
+.teaching-section h3 {
+  font-size: 22px;
+  /* تنظیم اندازه عنوان */
+  font-weight: var(--bold);
+  /* تنظیم وزن فونت */
+  margin: 0;
+  /* حذف حاشیه */
+}
+
+.teaching-section p {
+  font-size: 14px;
+  /* تنظیم اندازه متن */
+  margin: 5px 0 0;
+  /* حاشیه بالایی */
+}
+
+/* Styles for mobile devices */
+@media (max-width: 767px) {
+  .teaching-section {
+    padding: 20px;
+    /* کاهش padding برای موبایل */
+  }
+
+  .swiper {
+    padding: 10px 0;
+    /* کاهش padding برای اسلایدر */
+  }
+
+  .swiper-slide {
+    padding: 5px;
+    /* کاهش padding برای هر اسلاید */
+  }
+
+  .slide-image {
+    width: 60px;
+    /* کاهش اندازه تصویر */
+    height: 60px;
+    /* کاهش اندازه تصویر */
+    margin-right: 10px;
+    /* کاهش فاصله بین تصویر و متن */
+  }
+
+  h3 {
+    font-size: 16px;
+    /* کاهش اندازه عنوان */
+  }
+
+  p {
+    font-size: 12px;
+    /* کاهش اندازه متن */
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 30px;
+    /* کاهش اندازه دکمه */
+    height: 30px;
+    /* کاهش اندازه دکمه */
+  }
 }
 
 .section-title {
@@ -1114,31 +1207,14 @@ body.scrollActive .scrollToTop {
 .slide-image {
   width: 95px;
   height: 95px;
-  margin-right: 60px;
+  margin-right: 20px;
   border-radius: 50%;
-
+  max-width: 100%;
+  /* اطمینان از اینکه تصویر هرگز بزرگتر از والد خود نمی‌شود */
+  height: auto;
   line-height: normal;
 }
 
 .text-content {
   flex: 1;
-}
-
-.slider-controls {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.slider-controls button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin: 0 5px;
-}
-
-.slider-controls button:hover {
-  background-color: #0056b3;
 }
