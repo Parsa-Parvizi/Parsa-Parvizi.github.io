@@ -2,24 +2,19 @@
 <html lang="en">
 
 <head>
-  <!-- ================================
-   Start meta and link Tags
-    ================================= -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Parsa Parvizi - Home</title>
-  <meta name="author" content="Parsa Parvizi">
-  <link rel="canonical" />
-  <link rel="shortcut icon" type="image/x-icon" href="images/icon.png">
-  <link rel="apple-touch-icon" type="image/jpg" href="images/icon.png">
-  <link rel="home" href="" />
-  
+  <meta name="author" content="Did Coding Limited & James Granger Design">
   <meta name="description" content="Parsa Parvizi is a FullStack Developer and Data Analust.">
   <meta name="keywords">
-  <!-- ================================
-   End meta and link Tags
-    ================================= -->
+  <link rel="canonical" />
+  <link rel="home" href="" />
+
+  <link rel="shortcut icon" type="image/x-icon" href="images/icon.png">
+  <link rel="apple-touch-icon" type="image/jpg" href="images/icon.png">
 
   <!-- ================================
     Start CSS
@@ -94,7 +89,7 @@
                       <a id="downloadPDF" class="btn btnPrimary">Download Resume</a>
                     </div>
                     <div class="col-auto">
-                      <a id="tourResume" class="btn btnSecondary btnOutline">Tour My Resume</a>
+                      <a id="tourResume" href="portfolio.html" class="btn btnSecondary btnOutline">Tour My Resume</a>
                     </div>
                   </div>
                 </div>
@@ -108,7 +103,7 @@
             <span class="close-button" id="closeModal">&times;</span>
             <h2>Welcome to My Resume Tour!</h2>
             <p>Click the button below to see my key skills.</p>
-            <button aria-disabled="true" id="startTour" class="btn btnPrimary">Start</button>
+            <button id="startTour" class="btn btnPrimary">Start</button>
           </div>
         </div>
       </div>
@@ -210,7 +205,7 @@
         </div>
       </div>
     </section>
-
+    <!-- Section for Certificates -->
     <section>
       <div class="sectionSpaceSm lightBg">
         <div class="container">
@@ -398,47 +393,59 @@
         </div>
       </div>
     </section>
-    <!-- New Section for Teaching Promotion -->
-    <section id="teachingPromotion" class="teaching-section">
-      <h2 class="section-title">Teaching Promotion</h2>
-      <div class="slider">
-        <div class="slide">
-          <a href="link-to-python-course" class="slide-link">
-            <div class="slide-content">
-              <img src="images/python-course.png" alt="Python Programming" class="slide-image">
-              <div class="text-content">
-                <h3>Python Programming</h3>
-                <p>Join my Python programming course to learn the fundamentals and advanced concepts of Python.</p>
+    <!-- Section for Teaching Promotion -->
+    <section id="teachingPromotion" class="teaching-section testimonialCol">
+      <div class="container">
+        <h2 class="smText regular">Teaching Promotion</h2>
+        <div class="swiper teachingSwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="testimonialCard">
+                <a href="link-to-python-course" class="slide-link">
+                  <div class="slide-content">
+                    <img src="images/python-course.png" alt="Python Programming" class="slide-image">
+                    <div class="text-content">
+                      <h3>Python Programming</h3>
+                      <p>Join my Python programming course to learn the fundamentals and advanced concepts of Python.
+                      </p>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
-          </a>
-        </div>
-        <div class="slide">
-          <a href="link-to-django-course" class="slide-link">
-            <div class="slide-content">
-              <img src="images/django-course.png" alt="Django Framework" class="slide-image">
-              <div class="text-content">
-                <h3>Django Framework</h3>
-                <p>Master the Django framework and build powerful web applications with Python.</p>
+            <div class="swiper-slide">
+              <div class="testimonialCard">
+                <a href="link-to-django-course" class="slide-link">
+                  <div class="slide-content">
+                    <img src="images/django-course.png" alt="Django Framework" class="slide-image">
+                    <div class="text-content">
+                      <h3>Django Framework</h3>
+                      <p>Master the Django framework and build powerful web applications with Python.</p>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
-          </a>
-        </div>
-        <div class="slide">
-          <a href="link-to-html-css-course" class="slide-link">
-            <div class="slide-content">
-              <img src="images/html-css-course.png" alt="HTML & CSS" class="slide-image">
-              <div class="text-content">
-                <h3>HTML & CSS</h3>
-                <p>Learn how to create beautiful and responsive web pages using HTML and CSS.</p>
+            <div class="swiper-slide">
+              <div class="testimonialCard">
+                <a href="link-to-html-css-course" class="slide-link">
+                  <div class="slide-content">
+                    <img src="images/html-css-course.png" alt="HTML & CSS" class="slide-image">
+                    <div class="text-content">
+                      <h3>HTML & CSS</h3>
+                      <p>Learn how to create beautiful and responsive web pages using HTML and CSS.</p>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
-          </a>
+          </div>
+          <!-- Navigation buttons -->
+          <div class="swiper-button-next swiperBtnStyle"></div>
+          <div class="swiper-button-prev swiperBtnStyle"></div>
+          <!-- Pagination -->
+          <!-- <div class="swiper-pagination swiperPaginationStyle"></div> -->
         </div>
-      </div>
-      <div class="slider-controls">
-        <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
-        <button class="next" onclick="changeSlide(1)">&#10095;</button>
       </div>
     </section>
     <section>
@@ -480,8 +487,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+
     </section>
   </main>
   <!-- ================================
