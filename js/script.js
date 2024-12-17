@@ -3,13 +3,9 @@ $('.navToggle').on('click', function (e) {
   $('body').toggleClass('navToggleActive');
 });
 
-// اضافه کردن رویداد کلیک به بدنه
 $('body').on('click', function (e) {
-  // بررسی اینکه آیا نوار ناوبری باز است
   if ($('body').hasClass('navToggleActive')) {
-    // بررسی اینکه آیا کاربر روی نوار ناوبری یا دکمه نوار ناوبری کلیک کرده است
     if (!$(e.target).closest('.navCol').length && !$(e.target).closest('.navToggle').length) {
-      // اگر کاربر روی نوار ناوبری یا دکمه نوار ناوبری کلیک نکرده باشد، نوار را ببندید
       $('body').removeClass('navToggleActive');
     }
   }
@@ -34,11 +30,11 @@ var swiper = new Swiper(".testimonialSwiper", {
 
 $('.scrollToTop').on('click', function (e) {
   e.preventDefault();
-  $('html, body').animate({ scrollTop: 0 }, 800); // اسکرول نرم به بالا
+  $('html, body').animate({ scrollTop: 0 }, 800);
 });
 
 $(window).scroll(function () {
-  if ($(this).scrollTop() > 300) { // 300 پیکسل پایین‌تر از بالای صفحه
+  if ($(this).scrollTop() > 300) {
     $('body').addClass('scrollActive');
   } else {
     $('body').removeClass('scrollActive');
@@ -69,51 +65,68 @@ var teachingSwiper = new Swiper('.teachingSwiper', {
   },
 });
 
-
-document.getElementById('downloadPDF').addEventListener('click', function () {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  doc.setFontSize(16);
-  doc.text("My Skills", 20, 20);
-  doc.setFontSize(12);
-
-  // جمع‌آوری مهارت‌ها از لیست
-  const skills = Array.from(document.querySelectorAll('#skillsList li')).map(li => li.textContent);
-
-  skills.forEach((skill, index) => {
-    doc.text(`${index + 1}. ${skill}`, 20, 30 + (10 * index));
-  });
-
-  doc.save("my_skills.pdf");
+// Initialize Swiper for Testimonials
+var testimonialSwiper = new Swiper('.testimonialSwiper', {
+  slidesPerView: 1, // Show 1 slide at a time
+  spaceBetween: 16, // Space between slides
+  loop: true, // Enable looping for infinite pagination
+  pagination: {
+    el: '.swiper-pagination', // Specify the pagination element
+    clickable: true, // Enable clickable pagination
+  },
+  navigation: {
+    nextEl: '.test-swiper-button-next',
+    prevEl: '.test-swiper-button-prev',
+  },
+  // Optional: Add effect for smooth transition
+  effect: 'slide',
 });
 
+const downloadPDFButton = document.getElementById('downloadPDF');
+if (downloadPDFButton) {
+  downloadPDFButton.addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("My Skills", 20, 20);
+    doc.setFontSize(12);
+
+    const skills = Array.from(document.querySelectorAll('#skillsList li')).map(li => li.textContent);
+
+    skills.forEach((skill, index) => {
+      doc.text(`${index + 1}. ${skill}`, 20, 30 + (10 * index));
+    });
+
+    doc.save("my_skills.pdf");
+  });
+}
 
 document.getElementById('tourResume').addEventListener('click', function (e) {
-  e.preventDefault(); // جلوگیری از رفتار پیش‌فرض لینک
+  e.preventDefault();
 
-  // نمایش پیام خوشامدگویی
+
   document.getElementById('welcomeModal').style.display = 'block';
 });
 
-// بستن modal
+
 document.getElementById('closeModal').addEventListener('click', function () {
   document.getElementById('welcomeModal').style.display = 'none';
 });
 
 document.getElementById('startTour').addEventListener('click', function () {
-  // بستن modal
+
   document.getElementById('welcomeModal').style.display = 'none';
 
-  // هدایت به صفحه portfolio.html
+
   window.location.href = 'portfolio.html';
 });
 
-let currentSlide = 0; // نمایه اسلاید فعلی
-const slides = document.querySelectorAll('.slide'); // انتخاب همه اسلایدها
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
 
 function showSlide(index) {
-  // مخفی کردن همه اسلایدها
+
   slides.forEach((slide, i) => {
     slide.style.display = (i === index) ? 'block' : 'none';
   });
@@ -122,15 +135,14 @@ function showSlide(index) {
 function changeSlide(direction) {
   currentSlide += direction;
 
-  // اگر به آخرین اسلاید رسید، به اول برگرد
+
   if (currentSlide >= slides.length) {
     currentSlide = 0;
   } else if (currentSlide < 0) {
-    currentSlide = slides.length - 1; // به آخرین اسلاید برگرد
+    currentSlide = slides.length - 1;
   }
 
   showSlide(currentSlide);
 }
 
-// نمایش اولین اسلاید در بارگذاری صفحه
 showSlide(currentSlide);
