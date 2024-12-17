@@ -4,6 +4,14 @@ $('.navToggle').on('click', function (e) {
 });
 
 
+$('body').on('click', function (e) {
+  if ($('body').hasClass('navToggleActive')) {
+    if (!$(e.target).closest('.navCol').length && !$(e.target).closest('.navToggle').length) {
+      $('body').removeClass('navToggleActive');
+    }
+  }
+});
+
 $(window).scroll(function () {
   if ($(this).scrollTop() > 10) {
     $('body').addClass('fixedHeader');
