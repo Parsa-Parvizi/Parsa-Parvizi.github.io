@@ -759,11 +759,8 @@ h1 {
 
 .keySkillCard.highlight {
   transform: scale(1.2);
-  /* بزرگ کردن */
   background-color: #f0f0f0;
-  /* رنگ پس‌زمینه روشن */
   border: 2px solid #007bff;
-  /* رنگ مرز */
 }
 
 @media (max-width:767px) {
@@ -1106,7 +1103,6 @@ body.scrollActive .scrollToTop {
 .teaching-section .swiper-button-next,
 .teaching-section .swiper-button-prev {
   background-color: var(--primaryColor);
-  /* color: #fff; */
   border-radius: 50%;
 }
 
@@ -1116,62 +1112,46 @@ body.scrollActive .scrollToTop {
 
 .teaching-section h3 {
   font-size: 22px;
-  /* تنظیم اندازه عنوان */
   font-weight: var(--bold);
-  /* تنظیم وزن فونت */
   margin: 0;
-  /* حذف حاشیه */
 }
 
 .teaching-section p {
   font-size: 14px;
-  /* تنظیم اندازه متن */
   margin: 5px 0 0;
-  /* حاشیه بالایی */
 }
 
-/* Styles for mobile devices */
 @media (max-width: 767px) {
   .teaching-section {
     padding: 20px;
-    /* کاهش padding برای موبایل */
   }
 
   .swiper {
     padding: 10px 0;
-    /* کاهش padding برای اسلایدر */
   }
 
   .swiper-slide {
     padding: 5px;
-    /* کاهش padding برای هر اسلاید */
   }
 
   .slide-image {
     width: 60px;
-    /* کاهش اندازه تصویر */
     height: 60px;
-    /* کاهش اندازه تصویر */
     margin-right: 10px;
-    /* کاهش فاصله بین تصویر و متن */
   }
 
   h3 {
     font-size: 16px;
-    /* کاهش اندازه عنوان */
   }
 
   p {
     font-size: 12px;
-    /* کاهش اندازه متن */
   }
 
   .swiper-button-next,
   .swiper-button-prev {
     width: 30px;
-    /* کاهش اندازه دکمه */
     height: 30px;
-    /* کاهش اندازه دکمه */
   }
 }
 
@@ -1210,11 +1190,64 @@ body.scrollActive .scrollToTop {
   margin-right: 20px;
   border-radius: 50%;
   max-width: 100%;
-  /* اطمینان از اینکه تصویر هرگز بزرگتر از والد خود نمی‌شود */
   height: auto;
   line-height: normal;
 }
 
+@media (max-width: 767px) {
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+  }
+
+  .swiper-pagination {
+    bottom: 5px;
+  }
+}
+
 .text-content {
   flex: 1;
+}
+
+.swiper-pagination {
+  bottom: 10px;
+}
+
+.swiper-pagination-bullet {
+  background: var(--primaryColor);
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--primaryDarkColor);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: var(--primaryColor);
+  color: #fff;
+  border-radius: 50%;
+}
+
+.cardStyle1 {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.infinite-scroll-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.infinite-scroll-button:hover {
+  background-color: #0056b3;
 }
