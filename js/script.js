@@ -41,6 +41,58 @@ $(window).scroll(function () {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  // Initialize Swiper for Certificates
+  var certificatesSwiper = new Swiper('.certificatesSlider', {
+    slidesPerView: 1, // Show 1 slide at a time
+    spaceBetween: 16, // Space between slides
+    loop: true, // Enable looping for infinite pagination
+    pagination: {
+      el: '.swiper-pagination', // Specify the pagination element
+      clickable: true, // Enable clickable pagination
+    },
+    navigation: {
+      nextEl: '.cert-swiper-button-next',
+      prevEl: '.cert-swiper-button-prev',
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2, // Show 2 slides on small screens
+        spaceBetween: 16,
+      },
+      768: {
+        slidesPerView: 3, // Show 3 slides on medium screens
+        spaceBetween: 16,
+      },
+    },
+  });
+});
+
+// Initialize Swiper for Certificates
+var certificatesSwiper = new Swiper('.certificatesSlider', {
+  slidesPerView: 1, // Show 1 slide at a time
+  spaceBetween: 16, // Space between slides
+  loop: true, // Enable looping for infinite pagination
+  pagination: {
+    el: '.swiper-pagination', // Specify the pagination element
+    clickable: true, // Enable clickable pagination
+  },
+  navigation: {
+    nextEl: '.cert-swiper-button-next',
+    prevEl: '.cert-swiper-button-prev',
+  },
+  breakpoints: {
+    640: {
+      slidesPerView: 2, // Show 2 slides on small screens
+      spaceBetween: 16,
+    },
+    768: {
+      slidesPerView: 3, // Show 3 slides on medium screens
+      spaceBetween: 16,
+    },
+  },
+});
+
 var teachingSwiper = new Swiper('.teachingSwiper', {
   slidesPerView: 1, // Show 1 slide on mobile
   spaceBetween: 10, // Space between slides
