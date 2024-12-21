@@ -24,7 +24,6 @@ html {
 
 body {
   font-family: var(--main-font);
-  font-family: var(--baseFont);
   color: var(--baseColor);
   line-height: normal;
 }
@@ -167,6 +166,9 @@ a,
   -webkit-transition: all 300ms ease-in-out 0s;
   -o-transition: all 300ms ease-in-out 0s;
   transition: all 300ms ease-in-out 0s;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
   position: fixed;
   z-index: 99;
   left: 0;
@@ -180,10 +182,10 @@ a,
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
 }
 
-
 /* navigation */
 .navCol {
   text-align: right;
+  align-items: center;
 }
 
 .navCol a {
@@ -231,19 +233,18 @@ a,
 }
 
 .navCol li {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .navCol li+li {
   padding-left: 32px;
 }
 
-/*   /navigation */
-
-
 /* nav toggle */
 .navToggle {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 15px 12px;
   width: 18px;
   height: 2px;
@@ -279,7 +280,7 @@ a,
 }
 
 .navToggle:after {
-  bottom: -4px;
+  bottom: -3px;
 }
 
 .navToggle__text {
@@ -344,7 +345,10 @@ a,
 }
 
 .sectionSpace {
-  padding: 80px 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .sectionSpaceSm {
@@ -607,18 +611,15 @@ body.navToggleActive {
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  /* Allow items to wrap onto the next line */
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  /* Responsive columns */
 }
 
 h1 {
   font-size: 5vw;
-  /* Font size relative to viewport width */
 }
 
 @media (min-width:992px) {
@@ -766,6 +767,8 @@ h1 {
 @media (max-width:767px) {
   .navCollapseCol {
     position: fixed;
+    display: flex;
+    align-items: center;
     top: 0;
     left: 0;
     bottom: 0;
@@ -894,6 +897,7 @@ h1 {
 }
 
 .logoCol img {
+  flex: 0 0 auto;
   width: 50px;
   height: auto;
   display: block;
@@ -1250,4 +1254,154 @@ body.scrollActive .scrollToTop {
 
 .infinite-scroll-button:hover {
   background-color: #0056b3;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 50px;
+  height: 24px;
+  margin-left: 10px;
+  top: 4px;
+}
+
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  border-radius: 50px;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.toggle-inner {
+  display: none;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+/* When checkbox is checked */
+.toggle-checkbox:checked+.toggle-label {
+  background-color: #4caf50;
+}
+
+.toggle-checkbox:checked+.toggle-label .toggle-switch {
+  transform: translateX(26px);
+}
+
+.sectionSpace {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.smTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.keySkillCard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.ksText {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 1rem;
+  color: #555;
+  transition: background-color 0.3s;
+}
+
+.ksText:hover {
+  background-color: #e0e0e0;
+}
+
+.workExperienceCard {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.workExperienceCard h5 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.workExperienceCard p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.toggle-label {
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 30px;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.toggle-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  transition: background-color 0.3s;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+body.dark-mode .toggle-label {
+  background-color: #666;
+}
+
+body.dark-mode .toggle-switch {
+  transform: translateX(30px);
+}
+
+body.dark-mode nav a {
+  color: #ffffff;
 }
