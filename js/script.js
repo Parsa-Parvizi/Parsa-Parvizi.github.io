@@ -200,18 +200,23 @@ function changeSlide(direction) {
 showSlide(currentSlide);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const themeToggle = document.getElementById('themeToggle');
+  const themeToggle = document.getElementById('theme-toggle');
   const body = document.body;
 
-  const currentTheme = localStorage.getItem('theme');
-  if (currentTheme) {
-    body.classList.add(currentTheme);
-    themeToggle.checked = currentTheme === 'dark-mode';
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    body.classList.add(savedTheme);
+    themeToggle.checked = savedTheme === 'dark-mode';
   }
 
   themeToggle.addEventListener('change', () => {
-    body.classList.toggle('dark-mode');
-    const theme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
-    localStorage.setItem('theme', theme);
+    if (themeToggle.checked) {
+      body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark-mode');
+    } else {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('theme', '');
+    }
   });
 });
