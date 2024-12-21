@@ -198,3 +198,20 @@ function changeSlide(direction) {
 }
 
 showSlide(currentSlide);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme) {
+    body.classList.add(currentTheme);
+    themeToggle.checked = currentTheme === 'dark-mode';
+  }
+
+  themeToggle.addEventListener('change', () => {
+    body.classList.toggle('dark-mode');
+    const theme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+    localStorage.setItem('theme', theme);
+  });
+});
