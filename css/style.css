@@ -1338,10 +1338,245 @@ body.dark-mode {
   font-size: 1rem;
   color: #555;
   transition: background-color 0.3s;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+/* Backend Development Skills */
+.ksText[data-skill="Python"] {
+  background-color: #3776AB;
+  color: white;
+}
+
+.ksText[data-skill="Django Framework"] {
+  background-color: #092E20;
+  color: white;
+}
+
+.ksText[data-skill="Django REST Framework"] {
+  background-color: #A30000;
+  color: white;
+}
+
+.ksText[data-skill="RESTful APIs"] {
+  background-color: #5B2B7A;
+  color: white;
+}
+
+.ksText[data-skill="API Integration"] {
+  background-color: #1E90FF;
+  color: white;
+}
+
+.ksText[data-skill="Socket Programming"] {
+  background-color: #F7A035;
+  color: white;
+}
+
+/* Frontend Development Skills */
+.ksText[data-skill="JavaScript"] {
+  background-color: #F7DF1E;
+  color: black;
+}
+
+.ksText[data-skill="HTML & CSS"] {
+  background-color: #E34F26;
+  color: white;
+}
+
+.ksText[data-skill="Vue.js Framework"] {
+  background-color: #4FC08D;
+  color: white;
+}
+
+.ksText[data-skill="Tailwind CSS"] {
+  background-color: #06B6D4;
+  color: white;
+}
+
+.ksText[data-skill="Bootstrap"] {
+  background-color: #7952B3;
+  color: white;
+}
+
+/* Database Skills */
+.ksText[data-skill="SQL"] {
+  background-color: #4479A1;
+  color: white;
+}
+
+.ksText[data-skill="Database Designer"] {
+  background-color: #F29111;
+  color: white;
+}
+
+.ksText[data-skill="MySQL"] {
+  background-color: #4479A1;
+  color: white;
+}
+
+.ksText[data-skill="SQLite"] {
+  background-color: #003B57;
+  color: white;
+}
+
+.ksText[data-skill="PostgreSQL"] {
+  background-color: #336791;
+  color: white;
+}
+
+.ksText[data-skill="MongoDB"] {
+  background-color: #47A248;
+  color: white;
+}
+
+.ksText[data-skill="Object-Relational Mapping"] {
+  background-color: #FF6F61;
+  color: white;
+}
+
+.ksText[data-skill="Redis"] {
+  background-color: #DC382D;
+  color: white;
+}
+
+/* Notable Skills */
+.ksText[data-skill="R Language"] {
+  background-color: #276DC3;
+  color: white;
+}
+
+.ksText[data-skill="Functional Programming"] {
+  background-color: #5A4FCF;
+  color: white;
+}
+
+.ksText[data-skill="Object Oriented Programming"] {
+  background-color: #00599C;
+  color: white;
+}
+
+.ksText[data-skill="Linux Experience"] {
+  background-color: #FCC624;
+  color: black;
+}
+
+.ksText[data-skill="Algorithms Knowledge"] {
+  background-color: #1E90FF;
+  color: white;
+}
+
+.ksText[data-skill="Data Structure Knowledge"] {
+  background-color: #FF6F61;
+  color: white;
+}
+
+.ksText[data-skill="Mathematics & Statistics"] {
+  background-color: #4B0082;
+  color: white;
+}
+
+.ksText[data-skill="Linear Algebra"] {
+  background-color: #800080;
+  color: white;
+}
+
+.ksText[data-skill="Translation"] {
+  background-color: #32CD32;
+  color: white;
+}
+
+/* Network & Security Skills */
+.ksText[data-skill="Network+"] {
+  background-color: #0078D7;
+  color: white;
+}
+
+.ksText[data-skill="Security+"] {
+  background-color: #FF4500;
+  color: white;
+}
+
+.ksText[data-skill="LPIC 1"] {
+  background-color: #FFD700;
+  color: black;
+}
+
+/* Tools & Applications */
+.ksText[data-skill="Microservices"] {
+  background-color: #FF6B6B;
+  color: white;
+}
+
+.ksText[data-skill="DevOps"] {
+  background-color: #1E90FF;
+  color: white;
+}
+
+.ksText[data-skill="System Design"] {
+  background-color: #32CD32;
+  color: white;
+}
+
+.ksText[data-skill="SOLID Principles"] {
+  background-color: #8A2BE2;
+  color: white;
+}
+
+.ksText[data-skill="Design Patterns"] {
+  background-color: #FF4500;
+  color: white;
+}
+
+.ksText[data-skill="UML Diagrams"] {
+  background-color: #4B0082;
+  color: white;
+}
+
+.ksText[data-skill="MVC Architecture"] {
+  background-color: #20B2AA;
+  color: white;
+}
+
+.ksText[data-skill="Machine Learning"] {
+  background-color: #FF6F61;
+  color: white;
+}
+
+.ksText[data-skill="AWS"] {
+  background-color: #FF9900;
+  color: white;
+}
+
+/* Tools & Applications Additional Skills */
+.ksText[data-skill="Docker"] {
+  background-color: #2496ED;
+  color: white;
+}
+
+.ksText[data-skill="Postman"] {
+  background-color: #FF6C37;
+  color: white;
+}
+
+.ksText[data-skill="Git"] {
+  background-color: #F05032;
+  color: white;
+}
+
+.ksText[data-skill="GitLab"] {
+  background-color: #FC6D26;
+  color: white;
+}
+
+.ksText[data-skill="GitFlow"] {
+  background-color: #0DB7ED;
+  color: white;
 }
 
 .ksText:hover {
-  background-color: #e0e0e0;
+  opacity: 0.9;
 }
 
 .workExperienceCard {
