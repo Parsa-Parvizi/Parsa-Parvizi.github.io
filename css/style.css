@@ -582,6 +582,7 @@ body.navToggleActive {
 /* portfolio page */
 .innerPageBannerCol {
   padding: 180px 0 150px;
+  margin-top: 60px;
 }
 
 .portfolioContentMain {
@@ -1377,8 +1378,13 @@ body.dark-mode {
   color: black;
 }
 
-.ksText[data-skill="HTML & CSS"] {
+.ksText[data-skill="HTML"] {
   background-color: #E34F26;
+  color: white;
+}
+
+.ksText[data-skill="CSS"] {
+  background-color: #017bd8;
   color: white;
 }
 
@@ -1638,28 +1644,24 @@ body.dark-mode nav a {
   color: #ffffff;
 }
 
-/* Responsive Adjustments for Skills Section */
+
 @media (max-width: 767px) {
   .keySkillCard {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    /* کاهش فاصله بین تگ‌ها */
     margin-bottom: 1rem;
   }
 
   .ksText {
     font-size: 0.8rem;
-    /* کاهش اندازه فونت */
     padding: 3px 8px;
-    /* کاهش پدینگ */
     margin-right: 3px;
     margin-bottom: 3px;
   }
 
   .smTitle {
     font-size: 1.2rem;
-    /* کاهش اندازه عنوان‌ها */
     margin-bottom: 0.5rem;
   }
 }
@@ -1748,4 +1750,144 @@ body.dark-mode nav a {
     padding-right: 15px;
     padding-left: 15px;
   }
+}
+
+
+.lightBg {
+  background-color: #f8f9fa;
+  padding: 60px 0;
+}
+
+.innerPageBannerCol {
+  background-color: #007bff;
+  color: white;
+  padding: 40px 0;
+  text-align: center;
+  flex: 1;
+}
+
+
+
+header {
+  position: relative;
+  flex: 1;
+}
+
+.xlTitle {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.xlTitle {
+  margin-top: 60px;
+}
+
+.portfolioRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pColMain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.sectionDescription {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 15px;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btnPrimary {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btnPrimary:hover {
+  background-color: #0056b3;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 0.25rem;
+}
+
+footer {
+  background-color: #343a40;
+  color: white;
+  padding: 20px 0;
+}
+
+.socialCol {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.socialCol li {
+  margin: 0 15px;
+}
+
+.socialCol img {
+  width: 30px;
+  transition: transform 0.3s;
+}
+
+.socialCol img:hover {
+  transform: scale(1.1);
+}
+
+.copyrightCol {
+  text-align: center;
+  margin-top: 10px;
 }

@@ -137,20 +137,13 @@ var testimonialSwiper = new Swiper('.testimonialSwiper', {
 const downloadPDFButton = document.getElementById('downloadPDF');
 if (downloadPDFButton) {
   downloadPDFButton.addEventListener('click', function () {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFontSize(16);
-    doc.text("My Skills", 20, 20);
-    doc.setFontSize(12);
-
-    const skills = Array.from(document.querySelectorAll('#skillsList li')).map(li => li.textContent);
-
-    skills.forEach((skill, index) => {
-      doc.text(`${index + 1}. ${skill}`, 20, 30 + (10 * index));
-    });
-
-    doc.save("my_skills.pdf");
+    const pdfUrl = 'media/ParsaParvizi.pdf';
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'ParsaParvizi.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
 }
 
