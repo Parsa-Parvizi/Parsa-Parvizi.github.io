@@ -26,6 +26,8 @@ body {
   font-family: var(--main-font);
   color: var(--baseColor);
   line-height: normal;
+  margin: 1px;
+  box-sizing: border-box;
 }
 
 ul {
@@ -34,9 +36,11 @@ ul {
   list-style-type: none;
 }
 
-* {
+@media screen and (max-width: 749px) {
+  .socialCol li {
     margin: 1px;
-    box-sizing: border-box;
+    /* تنظیم مارجین به ۱ پیکسل برای حالت موبایل */
+  }
 }
 
 img {
@@ -1895,4 +1899,45 @@ footer {
 .copyrightCol {
   text-align: center;
   margin-top: 10px;
+}
+
+.socialCol li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+@media screen and (max-width: 749px) {
+  .footerCol {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .socialCol {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    width: 100%;
+  }
+
+  .socialCol li {
+    margin: 5px;
+    flex: 0 0 45%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  .featured-work-title,
+  .featured-work-description {
+    text-align: center !important;
+  }
+
+  .featured-work-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
