@@ -1494,11 +1494,6 @@ body.dark-mode {
   color: white;
 }
 
-.ksText[data-skill="Translation"] {
-  background-color: #32CD32;
-  color: white;
-}
-
 /* Network & Security Skills */
 .ksText[data-skill="Network+"] {
   background-color: #0078D7;
