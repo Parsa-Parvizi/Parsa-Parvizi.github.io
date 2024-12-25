@@ -1510,9 +1510,24 @@ body.dark-mode {
   color: white;
 }
 
+.ksText[data-skill="CEH"] {
+  background-color: #FF6B6B;
+  color: white;
+}
+
 .ksText[data-skill="LPIC 1"] {
   background-color: #FFD700;
   color: black;
+}
+
+.ksText[data-skill="LPIC 2"] {
+  background-color: #5B2B7A;
+  color: white;
+}
+
+.ksText[data-skill="Shell Scripting"] {
+  background-color: #092E20;
+  color: white;
 }
 
 /* Tools & Applications */
