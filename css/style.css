@@ -353,16 +353,6 @@ a,
   padding-top: 15px;
 }
 
-.sectionSpace {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.sectionSpaceSm {
-  padding: 35px 0;
-}
 
 .ksText {
   display: block;
@@ -484,6 +474,8 @@ a,
 
 .portfolioImgCol img {
   border-radius: 6px;
+  align-content: center;
+  text-align: center;
   width: 246px;
   height: 184px;
   -o-object-fit: cover;
@@ -495,11 +487,10 @@ a,
   border-bottom: 1px solid #E0E0E0;
 }
 
-
-
+/* 
 .testimonialCol {
   padding-top: 35px;
-}
+} */
 
 .tContentCol>p:last-child {
   margin-bottom: 0;
@@ -597,7 +588,7 @@ body.navToggleActive {
 .portfolioContentMain {
   position: relative;
   z-index: 1;
-  padding: 50px 0;
+  padding: 30px 0;
 }
 
 .pCol {
@@ -688,7 +679,7 @@ h1 {
   }
 
   .sectionSpace {
-    padding: 60px 0;
+    padding-top: 10px;
   }
 
   .footerCol {
@@ -874,7 +865,7 @@ h1 {
   }
 
   .sectionSpace {
-    padding: 50px 0;
+    padding-top: 20px;
   }
 
   .portfolioRow .pColMain:nth-child(2n-1) .pCol {
@@ -946,7 +937,7 @@ h1 {
   }
 
   .sectionSpace {
-    padding: 40px 0;
+    padding: 20px 0;
   }
 
   .cardStyle1 {
@@ -1319,11 +1310,6 @@ body.dark-mode {
   transform: translateX(30px);
 }
 
-.sectionSpace {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .smTitle {
   font-size: 1.5rem;
   font-weight: bold;
@@ -1494,6 +1480,11 @@ body.dark-mode {
   color: white;
 }
 
+.ksText[data-skill="Translation"] {
+  background-color: #32CD32;
+  color: white;
+}
+
 /* Network & Security Skills */
 .ksText[data-skill="Network+"] {
   background-color: #0078D7;
@@ -1505,24 +1496,9 @@ body.dark-mode {
   color: white;
 }
 
-.ksText[data-skill="CEH"] {
-  background-color: #FF6B6B;
-  color: white;
-}
-
 .ksText[data-skill="LPIC 1"] {
   background-color: #FFD700;
   color: black;
-}
-
-.ksText[data-skill="LPIC 2"] {
-  background-color: #5B2B7A;
-  color: white;
-}
-
-.ksText[data-skill="Shell Scripting"] {
-  background-color: #092E20;
-  color: white;
 }
 
 /* Tools & Applications */
@@ -1952,7 +1928,6 @@ footer {
   }
 }
 
-
 .sectionTitle {
   text-align: center;
   margin: 20px 0;
@@ -2020,15 +1995,20 @@ footer {
 .portfolioCol {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Responsive grid */
   grid-gap: 20px;
+  /* Adjust gap between cards */
 }
 
-
+/* Mobile Slider (Optional) */
 @media (max-width: 768px) {
   .portfolioCol {
     grid-template-columns: 1fr;
+    /* Single column on mobile */
     overflow-x: auto;
+    /* Enable horizontal scrolling */
     scroll-behavior: smooth;
+    /* Smooth scrolling */
   }
 }
 
@@ -2055,8 +2035,11 @@ footer {
   border-radius: 5px;
   padding: 20px;
   display: flex;
+  /* Use flexbox for easier centering */
   flex-direction: column;
+  /* Ensure vertical stacking */
   align-items: center;
+  /* Center items vertically within the card */
 }
 
 .portfolioContentCol {
