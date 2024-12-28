@@ -213,3 +213,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+const likeCounts = {
+  book1: 0,
+  book2: 0,
+  book3: 0
+};
+
+function likeBook(bookId) {
+  likeCounts[bookId]++;
+  document.getElementById(`${bookId}-likes`).innerText = likeCounts[bookId];
+}
+
+function likeBook(bookId) {
+  const likeCountElement = document.getElementById(`${bookId}-likes`);
+  let currentLikes = parseInt(likeCountElement.innerText);
+  currentLikes++;
+  likeCountElement.innerText = currentLikes;
+}
