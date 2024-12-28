@@ -1951,3 +1951,131 @@ footer {
     align-items: center;
   }
 }
+
+
+.sectionTitle {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.bookCard {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bookImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.likeButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.likeButton:hover {
+  background-color: #0056b3;
+}
+
+.bookCard {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.container {
+  margin-top: 40px;
+}
+
+.bookImage {
+  max-width: 100%;
+  height: auto;
+}
+
+.likeCount {
+  margin-left: 10px;
+}
+
+.likeCount {
+  margin-left: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.portfolioCol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .portfolioCol {
+    grid-template-columns: 1fr;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+  }
+}
+
+.sectionSpace {
+  padding-top: 10px;
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.featured-work h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.portfolioCol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.portfolioCard {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.portfolioContentCol {
+  text-align: center;
+}
+
+.lgTitle {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.dateLbl {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .portfolioCol {
+    grid-template-columns: 1fr;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+  }
+}
