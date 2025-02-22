@@ -46,14 +46,23 @@
               </button>
             </div>
             <div class="navCollapseCol">
-              <div class="navCol">
+              <nav class="navCol" role="navigation">
                 <ul>
+                  <li>
+                    <div class="theme-toggle">
+                      <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
+                      <label for="theme-toggle" class="toggle-label">
+                        <span class="toggle-switch"></span>
+                      </label>
+                    </div>
+                  </li>
                   <li><a href="index.html">Home</a></li>
-                  <li><a href="portfolio.html">Portfolio</a></li>
+                  <li><a href="portfolio.html">Projects</a></li>
+                  <li><a href="book.html">Book</a></li>
                   <li><a href="blog.html">Blog</a></li>
                   <li><a href="contact.html">Contact</a></li>
                 </ul>
-              </div>
+              </nav>
             </div>
           </div>
         </div>
@@ -70,21 +79,16 @@
   <section>
     <div class="innerPageBannerCol">
       <div class="container">
-        <div class="row g-4 g-md-3  align-items-center">
-          <div class="col-md-6">
+        <div class="row g-4 g-md-3 align-items-center">
+          <div class="col-md-8">
             <div class="bannerContent">
-              <h1 class="xlTitle pb-md-3">Blog title</h1>
+              <h1 class="xlTitle pb-md-3">Getting Started with Python</h1>
+              <div class="blogMeta">
+                <span class="author">By Parsa Parvizi</span>
+                <span class="date">March 15, 2024</span>
+                <span class="category">Programming</span>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-auto">
-            <div class="authorCol">
-              <h4 class="smTitle pb-3">Bobby Stearman</h4>
-            </div>
-          </div>
-          <div class="col-md">
-            <h4 class="smTitle pb-3">12-10-2021</h4>
           </div>
         </div>
       </div>
@@ -92,18 +96,31 @@
   </section>
 
   <section>
-    <div class="sectionSpaceSm">
+    <div class="sectionPadding">
       <div class="container">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Aenean congue imperdiet lorem ut posuere. Maecenas nec accumsan
-          risus, quis luctus libero. Morbi a nulla ac felis scelerisque
-          feugiat quis vitae turpis. Vivamus nec augue vel enim scelerisque
-          cursus. Curabitur efficitur ipsum quis turpis bibendum egestas.
-          Nunc ac euismod dolor. Vestibulum nec ipsum fermentum, semper
-          quam eu, porttitor elit. Maecenas efficitur ex eget augue euismod
-          semper. Curabitur pharetra tortor vel orci volutpat semper.
-          Donec feugiat mauris ante. In hac habitasse platea dictumst.
-        </p>
+        <div class="blogContent cardWrapper">
+          <img src="images/blog-detail-1.jpg" alt="Python Programming" class="img-fluid mb-4">
+          <p>Python is one of the most popular programming languages in the world, and for good reason.
+            It's easy to learn, versatile, and has a vast ecosystem of libraries and frameworks.</p>
+
+          <h2>Why Choose Python?</h2>
+          <p>Python offers many advantages for both beginners and experienced developers:</p>
+          <ul>
+            <li>Simple and readable syntax</li>
+            <li>Large standard library</li>
+            <li>Active community support</li>
+            <li>Cross-platform compatibility</li>
+          </ul>
+
+          <h2>Getting Started</h2>
+          <p>To begin your Python journey, you'll need to:</p>
+          <ol>
+            <li>Download and install Python</li>
+            <li>Choose an IDE or text editor</li>
+            <li>Learn the basic syntax</li>
+            <li>Practice with simple projects</li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>

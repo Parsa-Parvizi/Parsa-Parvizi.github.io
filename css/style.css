@@ -1470,16 +1470,6 @@ body.dark-mode {
   color: white;
 }
 
-.ksText[data-skill="Mathematics & Statistics"] {
-  background-color: #4B0082;
-  color: white;
-}
-
-.ksText[data-skill="Linear Algebra"] {
-  background-color: #800080;
-  color: white;
-}
-
 .ksText[data-skill="Translation"] {
   background-color: #32CD32;
   color: white;
@@ -1514,6 +1504,10 @@ body.dark-mode {
     background-color: #180d1d;
     color: rgb(255, 255, 255);
 }
+.ksText[data-skill="OWASP Fundamentals"] {
+  background-color: #5A4FCF;
+  color: white;
+}
 
 /* Tools & Applications */
 .ksText[data-skill="Microservices"] {
@@ -1546,15 +1540,6 @@ body.dark-mode {
   color: white;
 }
 
-.ksText[data-skill="MVC Architecture"] {
-  background-color: #20B2AA;
-  color: white;
-}
-
-.ksText[data-skill="Machine Learning"] {
-  background-color: #FF6F61;
-  color: white;
-}
 
 .ksText[data-skill="AWS"] {
   background-color: #FF9900;

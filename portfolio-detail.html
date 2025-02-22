@@ -21,6 +21,8 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.css">
   <link href="css/style.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- ================================
       End CSS
       ================================= -->
@@ -46,14 +48,23 @@
               </button>
             </div>
             <div class="navCollapseCol">
-              <div class="navCol">
+              <nav class="navCol" role="navigation">
                 <ul>
+                  <li>
+                    <div class="theme-toggle">
+                      <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
+                      <label for="theme-toggle" class="toggle-label">
+                        <span class="toggle-switch"></span>
+                      </label>
+                    </div>
+                  </li>
                   <li><a href="index.html">Home</a></li>
-                  <li><a href="portfolio.html">Portfolio</a></li>
+                  <li><a href="portfolio.html">Projects</a></li>
+                  <li><a href="book.html">Book</a></li>
                   <li><a href="blog.html">Blog</a></li>
                   <li><a href="contact.html">Contact</a></li>
                 </ul>
-              </div>
+              </nav>
             </div>
           </div>
         </div>
@@ -82,18 +93,31 @@
   </section>
 
   <section>
-    <div class="sectionSpaceSm">
+    <div class="sectionPadding">
       <div class="container">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Aenean congue imperdiet lorem ut posuere. Maecenas nec accumsan
-          risus, quis luctus libero. Morbi a nulla ac felis scelerisque
-          feugiat quis vitae turpis. Vivamus nec augue vel enim scelerisque
-          cursus. Curabitur efficitur ipsum quis turpis bibendum egestas.
-          Nunc ac euismod dolor. Vestibulum nec ipsum fermentum, semper
-          quam eu, porttitor elit. Maecenas efficitur ex eget augue euismod
-          semper. Curabitur pharetra tortor vel orci volutpat semper.
-          Donec feugiat mauris ante. In hac habitasse platea dictumst.
-        </p>
+        <div class="portfolioDetail cardWrapper">
+          <div class="row">
+            <div class="col-md-8">
+              <img src="images/project-detail.jpg" alt="Project Detail" class="img-fluid mb-4">
+            </div>
+            <div class="col-md-4">
+              <div class="projectInfo">
+                <h2>Project Details</h2>
+                <ul class="projectMeta">
+                  <li><strong>Client:</strong> Example Client</li>
+                  <li><strong>Date:</strong> March 2024</li>
+                  <li><strong>Category:</strong> Web Development</li>
+                  <li><strong>Technologies:</strong> Python, Django, JavaScript</li>
+                </ul>
+                <a href="#" class="btn btnPrimary">View Live</a>
+              </div>
+            </div>
+          </div>
+          <div class="projectDescription">
+            <h3>Project Description</h3>
+            <p>Detailed description of the project...</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>

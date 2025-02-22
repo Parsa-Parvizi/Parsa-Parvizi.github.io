@@ -1,0 +1,459 @@
+/* Common Styles */
+.sectionBg {
+  background-color: #F0F0F6;
+  padding: 60px 0;
+}
+
+.sectionPadding {
+  padding: 60px 0;
+}
+
+.cardWrapper {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.cardWrapper:hover {
+  transform: translateY(-5px);
+}
+
+/* Blog Styles */
+.blogMeta {
+  margin-top: 15px;
+  color: #666;
+}
+
+.blogMeta span {
+  margin-right: 20px;
+}
+
+.blogContent {
+  font-size: 1.1em;
+  line-height: 1.8;
+}
+
+.blogContent h2 {
+  margin: 30px 0 15px;
+}
+
+/* Book Styles */
+.bookCard {
+  height: 100%;
+}
+
+.bookImage {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.bookTitle {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.bookDescription {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.bookMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #888;
+}
+
+.bookActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  color: #ff4757;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.likeButton:hover {
+  transform: scale(1.1);
+}
+
+.likeCount {
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
+/* Teaching Promotion Styles */
+.teachingPromotionCol {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.teachingPromotionCol h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.teachingPromotionCol p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.teachingPromotionCol img {
+  border-radius: 8px;
+}
+
+/* Portfolio Styles */
+.bannerContent {
+  text-align: center;
+}
+
+.bannerText {
+  color: #666;
+  font-size: 1.2em;
+  margin-top: 15px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0 4px 8px 0;
+  background: rgba(0, 123, 255, 0.1);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #007bff;
+  transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.projectInfo {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+.pCol {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.pCol:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+}
+
+.pCol:hover .projectInfo {
+  transform: translateY(0);
+}
+
+.pImg {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.pCol:hover .pImg {
+  transform: scale(1.05);
+}
+
+.projectInfo h3 {
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.projectInfo p {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.projectTech {
+  margin: 15px 0;
+}
+
+.btn.btnPrimary {
+  margin-top: 15px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+}
+
+.projectMeta {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.projectMeta li {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.portfolioDetail {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.projectDescription {
+  margin-top: 40px;
+}
+
+/* Dark Mode Toggle */
+.theme-toggle {
+  position: relative;
+  margin-right: 20px;
+}
+
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-label {
+  cursor: pointer;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+  background: #ccc;
+  border-radius: 25px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.toggle-switch {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: #fff;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background: #007bff;
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-switch {
+  transform: translateX(25px);
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+[data-theme="dark"] .headerCol {
+  background: #2d2d2d;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .navCol ul li a {
+  color: #fff;
+}
+
+[data-theme="dark"] .navCol ul li a:hover {
+  color: #007bff;
+}
+
+[data-theme="dark"] .cardWrapper {
+  background: #2d2d2d;
+  box-shadow: 0 2px 15px rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .sectionBg {
+  background-color: #1a1a1a;
+}
+
+[data-theme="dark"] .bannerContent h1,
+[data-theme="dark"] .xlTitle,
+[data-theme="dark"] .mdTitle,
+[data-theme="dark"] .smTitle {
+  color: #fff;
+}
+
+[data-theme="dark"] .bannerContent p,
+[data-theme="dark"] .cardStyle1 p {
+  color: #ccc;
+}
+
+[data-theme="dark"] .cardStyle1 {
+  background: #2d2d2d;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .cardOptionCol li {
+  color: #888;
+}
+
+[data-theme="dark"] .workExperienceCard {
+  background: #2d2d2d;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .workExperienceCard h5 {
+  color: #fff;
+}
+
+[data-theme="dark"] .workExperienceCard p {
+  color: #ccc;
+}
+
+[data-theme="dark"] .keySkillCard .ksText {
+  background: #2d2d2d;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .keySkillCard .ksText:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+[data-theme="dark"] .projectInfo {
+  background: rgba(45, 45, 45, 0.95);
+}
+
+[data-theme="dark"] .projectInfo h3,
+[data-theme="dark"] .bookTitle,
+[data-theme="dark"] .blogContent h2,
+[data-theme="dark"] .card-title {
+  color: #fff;
+}
+
+[data-theme="dark"] .projectInfo p,
+[data-theme="dark"] .bookDescription,
+[data-theme="dark"] .blogContent p,
+[data-theme="dark"] .card-text {
+  color: #ccc;
+}
+
+[data-theme="dark"] .postMeta,
+[data-theme="dark"] .blogMeta {
+  color: #888;
+}
+
+[data-theme="dark"] .tech-tag {
+  background: rgba(0, 123, 255, 0.2);
+  color: #4da3ff;
+}
+
+[data-theme="dark"] .btn.btnPrimary {
+  background: #007bff;
+  color: #fff;
+}
+
+[data-theme="dark"] .btn.btnSecondary {
+  color: #fff;
+  border-color: #fff;
+}
+
+[data-theme="dark"] .btn.btnSecondary:hover {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+[data-theme="dark"] .footerCol {
+  background: #2d2d2d;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .copyrightCol p {
+  color: #888;
+}
+
+/* Dark mode for forms */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+  background: #2d2d2d;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+  background: #333;
+  border-color: #007bff;
+}
+
+[data-theme="dark"] label {
+  color: #fff;
+}
+
+/* Dark mode for modal */
+[data-theme="dark"] .modal-content {
+  background: #2d2d2d;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .modal-content h2 {
+  color: #fff;
+}
+
+[data-theme="dark"] .close-button {
+  color: #fff;
+}
+
+/* Company Link Styles */
+.company-link {
+  color: #007bff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.company-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Dark mode for company link */
+[data-theme="dark"] .company-link {
+  color: #4da3ff;
+}
+
+[data-theme="dark"] .company-link:hover {
+  color: #75b7ff;
+} 
