@@ -1898,7 +1898,7 @@
           <div class="lg:col-span-7 flex flex-col self-start lg:h-[90%]">
             <div id="contact-form-card" class="surface-card p-6 sm:p-8 flex-1 flex flex-col justify-between">
               <!-- Persian Redesigned Header Strip (Hidden in EN) -->
-              <div id="contact-fa-card-header" class="contact-box-header hidden items-center justify-between flex-wrap gap-3">
+              <!-- <div id="contact-fa-card-header" class="contact-box-header hidden items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-3 ps-1">
                   <span class="contact-box-status-ring" aria-hidden="true"></span>
                   <div class="flex flex-col">
@@ -1907,7 +1907,7 @@
                   </div>
                 </div>
                 <span id="contact-fa-card-sla"></span>
-              </div>
+              </div> -->
 
               <!-- Request Type Segmented Tabs -->
               <label id="contact-type-label" class="block text-xs font-mono-tech uppercase tracking-wider mb-3" style="color: var(--text-secondary);"></label>
@@ -2316,8 +2316,8 @@
           contactGoodreadsTitle: 'گودریدز (Goodreads)',
           contactCratesioTitle: 'کریتس‌دات‌آی‌و (Crates.io)',
           contactTypeLabel: 'نوع درخواست را انتخاب کنید',
-          contactFaBadge: 'فرم مستقیم ارتباط فنی و مشاوره',
-          contactFaSla: 'پاسخ‌گویی سریع · بررسی دقیق جزئیات',
+          // contactFaBadge: 'فرم مستقیم ارتباط فنی و مشاوره',
+          // contactFaSla: 'پاسخ‌گویی سریع · بررسی دقیق جزئیات',
           inquiryTypes: {
             project: {
               label: 'درخواست پروژه',
@@ -3619,8 +3619,8 @@ Headers: { "X-Edge-Node": "edge-gpu-gate-01", "Idempotency-Key": "det-98412" }
         faHeader.classList.toggle('flex', !isEn);
         const badgeEl = document.getElementById('contact-fa-card-badge');
         const slaEl = document.getElementById('contact-fa-card-sla');
-        if (badgeEl) badgeEl.textContent = localizeDigits(t.contactFaBadge || '');
-        if (slaEl) slaEl.textContent = localizeDigits(t.contactFaSla || '');
+        // if (badgeEl) badgeEl.textContent = localizeDigits(t.contactFaBadge || '');
+        // if (slaEl) slaEl.textContent = localizeDigits(t.contactFaSla || '');
       }
 
       // Render Segmented Inquiry Tabs
