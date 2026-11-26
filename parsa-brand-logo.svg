@@ -1,0 +1,5 @@
+<svg id="brand-logo-en" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0 transition-transform duration-300 group-hover:scale-105">
+  <rect x="1.5" y="1.5" width="25" height="25" rx="6" stroke="currentColor" stroke-width="1.5"></rect>
+  <path d="M9.5 20V8H15C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16H9.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"></path>
+  <rect x="17.5" y="17.5" width="3.5" height="3.5" rx="0.75" fill="#A88B62"></rect>
+</svg>
