@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARSA. | Tutorials & Engineering Courses</title>
+  <meta name="description" content="Structured software engineering tutorials, backend architecture courses, Rust systems programming workshops, and practical production labs by Parsa Parvizi." />
+  <meta name="theme-color" content="#171A1F" />
+
+  <!-- Icons & Social Link Preview -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23171A1F'/%3E%3Crect x='5' y='5' width='54' height='54' rx='11' fill='none' stroke='%23F8F8F6' stroke-opacity='0.35' stroke-width='2'/%3E%3Cpath d='M21 46V18h13.5c5.523 0 10 4.477 10 10s-4.477 10-10 10H21' fill='none' stroke='%23F8F8F6' stroke-width='4.5' stroke-linecap='square'/%3E%3Crect x='41' y='41' width='9' height='9' rx='2' fill='%23A88B62'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23171A1F'/%3E%3Cpath d='M58 128V52h38c15.464 0 28 12.536 28 28s-12.536 28-28 28H58' fill='none' stroke='%23F8F8F6' stroke-width='12' stroke-linecap='square'/%3E%3Crect x='114' y='114' width='24' height='24' rx='5' fill='%23A88B62'/%3E%3C/svg%3E" />
+
+  <!-- Prevent Theme & Language FOUC (Synchronized with index.html) -->
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('parsa_theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const savedLang = localStorage.getItem('parsa_lang') || 'en';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'fa' ? 'rtl' : 'ltr');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Manrope, Inter, JetBrains Mono & Vazirmatn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM TOKENS (Identical to index.html)
+       ========================================================================== */
+    :root {
+      --palette-charcoal: #171A1F;
+      --palette-deep-blue: #263E54;
+      --palette-bronze: #A88B62;
+      --palette-stone: #E9E7E1;
+      --palette-off-white: #F8F8F6;
+
+      --bg-primary: var(--palette-off-white);
+      --bg-surface: var(--palette-stone);
+      --bg-elevated: #FFFFFF;
+      --bg-code: #171A1F;
+      --text-code: #F8F8F6;
+      --text-primary: var(--palette-charcoal);
+      --text-secondary: #4A515B;
+      --text-muted: #717882;
+      --accent-primary: var(--palette-deep-blue);
+      --accent-primary-hover: #1C2F40;
+      --accent-secondary: var(--palette-bronze);
+      --border-hairline: rgba(23, 26, 31, 0.12);
+      --border-strong: rgba(23, 26, 31, 0.24);
+      --header-backdrop: rgba(248, 248, 246, 0.88);
+      --shadow-subtle: 0 4px 20px -2px rgba(23, 26, 31, 0.05);
+
+      --font-en-heading: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-en-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-fa: 'Vazirmatn', Tahoma, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: var(--palette-charcoal);
+      --bg-surface: #1E2229;
+      --bg-elevated: #232830;
+      --bg-code: #121418;
+      --text-code: #E9E7E1;
+      --text-primary: var(--palette-off-white);
+      --text-secondary: #A5ACB8;
+      --text-muted: #767E8C;
+      --accent-primary: #3D6487;
+      --accent-primary-hover: #4C7AA3;
+      --accent-secondary: #C2A376;
+      --border-hairline: rgba(248, 248, 246, 0.11);
+      --border-strong: rgba(248, 248, 246, 0.22);
+      --header-backdrop: rgba(23, 26, 31, 0.88);
+      --shadow-subtle: 0 8px 28px -4px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ==========================================================================
+       2. TYPOGRAPHY & DIRECTIONAL RULES
+       ========================================================================== */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5.5rem;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-secondary) var(--bg-surface);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .typewriter-cursor { animation: none; }
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    html[lang="en"] body {
+      font-family: var(--font-en-body);
+      line-height: 1.65;
+    }
+
+    html[lang="en"] h1,
+    html[lang="en"] h2,
+    html[lang="en"] h3,
+    html[lang="en"] h4,
+    html[lang="en"] .font-heading {
+      font-family: var(--font-en-heading);
+      letter-spacing: -0.02em;
+    }
+
+    html[lang="fa"] body,
+    html[lang="fa"] h1,
+    html[lang="fa"] h2,
+    html[lang="fa"] h3,
+    html[lang="fa"] h4,
+    html[lang="fa"] .font-heading {
+      font-family: var(--font-fa);
+      font-feature-settings: "ss01";
+    }
+
+    html[lang="fa"] body {
+      line-height: 1.85;
+    }
+
+    .font-mono-tech {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    html[lang="fa"] button,
+    html[lang="fa"] input,
+    html[lang="fa"] select,
+    html[lang="fa"] label,
+    html[lang="fa"] a,
+    html[lang="fa"] span,
+    html[lang="fa"] p,
+    html[lang="fa"] li,
+    html[lang="fa"] #course-modal,
+    html[lang="fa"] #scroll-top-btn {
+      font-family: var(--font-fa);
+    }
+
+    html[lang="fa"] .font-mono-tech,
+    html[lang="fa"] .tech-badge,
+    html[lang="fa"] .section-index {
+      font-family: var(--font-fa) !important;
+      letter-spacing: 0;
+    }
+
+    html[lang="fa"] #hero-subtitle {
+      font-family: var(--font-fa);
+      direction: rtl;
+      unicode-bidi: isolate;
+      letter-spacing: 0;
+    }
+
+    html[lang="fa"] #site-footer {
+      direction: rtl;
+      text-align: right;
+      font-family: var(--font-fa);
+    }
+
+    html[lang="fa"] #site-footer .footer-copy-line {
+      font-family: var(--font-fa);
+      direction: rtl;
+      unicode-bidi: isolate;
+      text-align: left;
+    }
+
+    /* ==========================================================================
+       3. EDITORIAL & ENGINEERING COMPONENT STYLES
+       ========================================================================== */
+    .surface-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.25s ease, box-shadow 0.2s ease;
+    }
+
+    .surface-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .elevated-panel {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .hairline-b { border-bottom: 1px solid var(--border-hairline); }
+    .hairline-t { border-top: 1px solid var(--border-hairline); }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: #F8F8F6;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface);
+    }
+
+    .tech-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: 0.375rem;
+      background-color: var(--bg-primary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-hairline);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      direction: ltr;
+    }
+
+    .section-index {
+      font-family: var(--font-mono);
+      color: var(--accent-secondary);
+      font-size: 0.875rem;
+      line-height: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      height: 1.5rem;
+      min-height: 1.5rem;
+      vertical-align: top;
+      overflow: hidden;
+      direction: ltr;
+    }
+
+    html[lang="fa"] .section-index {
+      font-family: var(--font-fa);
+      line-height: 1.65rem;
+      height: 1.65rem;
+      min-height: 1.65rem;
+      direction: rtl;
+      unicode-bidi: isolate;
+      letter-spacing: 0;
+    }
+
+    .section-index .tw-text {
+      display: inline-block;
+      line-height: inherit;
+      white-space: nowrap;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 0.5em;
+      height: 1em;
+      flex-shrink: 0;
+      background-color: var(--accent-secondary);
+      margin-inline-start: 0.25rem;
+      animation: cursor-blink 0.9s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .engineering-grid-bg {
+      background-image:
+        linear-gradient(to right, var(--border-hairline) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-hairline) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 45%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 45%, transparent 85%);
+    }
+
+    .code-window {
+      background-color: var(--bg-code);
+      color: var(--text-code);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.625rem;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .nav-active-pill {
+      background-color: rgba(168, 139, 98, 0.14);
+      color: var(--accent-secondary);
+      border: 1px solid rgba(168, 139, 98, 0.32);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+      border-inline-start: 1px solid var(--border-hairline);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 9999px;
+      border: 2px solid var(--bg-surface);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
+
+    .scroll-top-fab {
+      position: fixed;
+      bottom: 1.5rem;
+      inset-inline-end: 1.5rem;
+      z-index: 35;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, border-color 0.2s ease;
+    }
+    .scroll-top-fab.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="selection:bg-[#A88B62]/25">
+
+  <!-- ========================================================================
+       STICKY HEADER & NAVIGATION (Synchronized with index.html)
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 hairline-b transition-colors duration-200" style="background-color: var(--header-backdrop); backdrop-filter: blur(12px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo linking back to index.html -->
+      <a href="index.html#home" class="flex items-center gap-2.5 group focus:outline-none" aria-label="PARSA Home">
+        <svg id="brand-logo-en" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <rect x="1.5" y="1.5" width="25" height="25" rx="6" stroke="currentColor" stroke-width="1.5" />
+          <path d="M9.5 20V8H15C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16H9.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" />
+          <rect x="17.5" y="17.5" width="3.5" height="3.5" rx="0.75" fill="#A88B62" />
+        </svg>
+        <svg id="brand-logo-fa" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <rect x="1.5" y="1.5" width="25" height="25" rx="6" stroke="currentColor" stroke-width="1.5" />
+          <path d="M7 14.5H20.5V10.5M14.5 14.5V10.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="10.5" cy="18.5" r="1.35" fill="#A88B62" />
+          <circle cx="14.5" cy="18.5" r="1.35" fill="#A88B62" />
+          <circle cx="12.5" cy="21.2" r="1.35" fill="#A88B62" />
+        </svg>
+        <span id="navbar-brand-name" class="font-bold text-xl tracking-tight">
+          PARSA<span style="color: var(--accent-secondary);">.</span>
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav id="desktop-nav" class="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Primary Navigation"></nav>
+
+      <!-- Controls -->
+      <div class="flex items-center gap-2">
+        <button id="lang-toggle" type="button" class="btn-secondary px-3 py-1.5 text-xs font-mono-tech font-medium flex items-center gap-1.5 cursor-pointer" aria-label="Switch Language">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          <span id="lang-label">FA</span>
+        </button>
+
+        <button id="theme-toggle" type="button" class="btn-secondary p-2 cursor-pointer" aria-label="Toggle Light/Dark Theme">
+          <svg id="icon-sun" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+        </button>
+
+        <button id="mobile-menu-btn" type="button" class="lg:hidden btn-secondary p-2 cursor-pointer" aria-label="Open Navigation Menu" aria-expanded="false">
+          <svg id="icon-menu" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="14" y2="17" />
+          </svg>
+          <svg id="icon-close" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav" class="hidden lg:hidden hairline-t px-4 py-5" style="background-color: var(--bg-primary);">
+      <nav id="mobile-nav-links" class="grid grid-cols-2 gap-2"></nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN CONTENT: TUTORIALS & COURSES
+       ======================================================================== -->
+  <main id="courses-main">
+    <!-- Hero Header -->
+    <section class="relative overflow-hidden py-14 sm:py-20 hairline-b">
+      <div class="absolute inset-0 engineering-grid-bg pointer-events-none"></div>
+
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb back to index.html -->
+        <div class="mb-6 flex items-center gap-2 text-xs font-mono-tech" style="color: var(--text-muted);">
+          <a href="index.html" id="breadcrumb-home" class="hover:underline inline-flex items-center gap-1.5" style="color: var(--accent-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            <span></span>
+          </a>
+          <span>/</span>
+          <span id="breadcrumb-current"></span>
+        </div>
+
+        <div class="max-w-3xl">
+          <span class="section-index mb-3" data-typewriter="07 // TUTORIALS & COURSES" data-typewriter-en="07 // TUTORIALS & COURSES" data-typewriter-fa="۰۷ // آموزش‌ها و دوره‌ها">07 // TUTORIALS & COURSES</span>
+          <h1 id="page-heading" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-4"></h1>
+          <p id="hero-subtitle" class="font-mono-tech text-xs sm:text-sm tracking-wide uppercase py-3 my-4 hairline-t hairline-b" style="color: var(--text-secondary);"></p>
+          <p id="page-summary" class="text-base sm:text-lg mb-8 max-w-2xl" style="color: var(--text-secondary);"></p>
+
+          <!-- Key Training Metrics Strip -->
+          <div id="training-metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Courses & Workshops Catalog -->
+    <section id="catalog" class="py-16 sm:py-24 hairline-b">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <span class="section-index mb-2" data-typewriter="CURRICULUM // TRACKS" data-typewriter-en="CURRICULUM // TRACKS" data-typewriter-fa="سرفصل‌ها // مسیرهای آموزشی">CURRICULUM // TRACKS</span>
+            <h2 id="catalog-heading" class="text-2xl sm:text-3xl font-bold"></h2>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div id="category-filters" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Courses Grid -->
+        <div id="courses-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"></div>
+      </div>
+    </section>
+
+    <!-- Free Mini-Tutorials & Hands-On Labs -->
+    <section id="mini-tutorials" class="py-16 sm:py-24 hairline-b">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mb-12">
+          <span class="section-index mb-2" data-typewriter="LABS // HANDS-ON GUIDES" data-typewriter-en="LABS // HANDS-ON GUIDES" data-typewriter-fa="کارگاه‌ها // راهنماهای عملی">LABS // HANDS-ON GUIDES</span>
+          <h2 id="labs-heading" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
+          <p id="labs-desc" class="text-sm sm:text-base" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div id="labs-list" class="divide-y" style="border-color: var(--border-hairline);"></div>
+      </div>
+    </section>
+
+    <!-- Mentorship & Custom Corporate Training CTA Banner -->
+    <section class="py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="surface-card p-7 sm:p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="max-w-2xl">
+            <span id="cta-kicker" class="font-mono-tech text-xs uppercase tracking-wider block mb-2" style="color: var(--accent-secondary);"></span>
+            <h2 id="cta-title" class="text-2xl sm:text-3xl font-bold mb-2.5"></h2>
+            <p id="cta-desc" class="text-sm sm:text-base" style="color: var(--text-secondary);"></p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 shrink-0">
+            <a href="index.html#contact" id="cta-primary-btn" class="btn-primary px-6 py-3.5 text-sm font-medium inline-flex items-center gap-2">
+              <span></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+            <a href="projects.html" id="cta-secondary-btn" class="btn-secondary px-5 py-3.5 text-sm font-medium"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER (Identical to index.html)
+       ======================================================================== -->
+  <footer id="site-footer" class="hairline-t py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="color: var(--text-muted);">
+      <div class="flex items-center gap-2">
+        <span id="footer-brand-name" class="font-mono-tech font-bold text-sm" style="color: var(--text-primary);">PARSA<span style="color: var(--accent-secondary);">.</span></span>
+        <span id="footer-tagline"></span>
+      </div>
+      <div id="footer-copyright" class="footer-copy-line font-mono-tech">
+        &copy; <span id="current-year"></span> PARSA. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Scroll-to-Top Action -->
+  <button
+    id="scroll-top-btn"
+    type="button"
+    aria-label="Scroll to top"
+    class="scroll-top-fab elevated-panel px-3.5 py-2.5 flex items-center gap-2 text-xs font-mono-tech cursor-pointer hover:border-[#A88B62]"
+  >
+    <span id="scroll-percent-label" style="color: var(--accent-secondary);">0%</span>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="12" y1="19" x2="12" y2="5" />
+      <polyline points="5 12 12 5 19 12" />
+    </svg>
+  </button>
+
+  <!-- ========================================================================
+       COURSE SYLLABUS & LAB READER MODAL
+       ======================================================================== -->
+  <div id="course-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-course-title">
+    <div class="fixed inset-0 bg-black/65 backdrop-blur-sm transition-opacity" id="course-modal-backdrop"></div>
+    <div class="relative min-h-screen flex items-start justify-center p-2 sm:p-6 lg:p-10">
+      <div class="relative w-full max-w-4xl elevated-panel overflow-hidden my-4">
+        <div class="sticky top-0 z-20 px-5 sm:px-8 py-4 hairline-b flex items-center justify-between gap-4" style="background-color: var(--bg-elevated);">
+          <div class="flex items-center gap-3 min-w-0">
+            <span id="modal-tag" class="section-index shrink-0">SYLLABUS</span>
+            <h3 id="modal-course-title" class="text-base sm:text-lg font-bold truncate"></h3>
+          </div>
+          <button type="button" id="close-course-modal" class="btn-secondary px-3 py-1.5 text-xs font-mono-tech flex items-center gap-1.5 shrink-0 cursor-pointer">
+            <span>ESC</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div id="course-modal-body" class="p-5 sm:p-8 lg:p-10 space-y-8"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       COURSES DATA & APPLICATION ENGINE
+       ======================================================================== -->
+  <script>
+    const COURSES_DATA = {
+      nav: [
+        { id: 'home', num: '01', en: 'Home', fa: 'خانه', href: 'index.html#home' },
+        { id: 'about', num: '02', en: 'About', fa: 'درباره من', href: 'index.html#about' },
+        { id: 'skills', num: '03', en: 'Skills', fa: 'مهارت‌ها', href: 'index.html#skills' },
+        { id: 'projects', num: '04', en: 'Projects', fa: 'پروژه‌ها', href: 'projects.html' },
+        { id: 'articles', num: '05', en: 'Articles', fa: 'مقالات', href: 'index.html#articles' },
+        { id: 'books', num: '06', en: 'Book Reviews', fa: 'مرور کتاب‌ها', href: 'index.html#books' },
+        { id: 'tutorial', num: '07', en: 'Tutorial', fa: 'آموزش‌ها', href: 'course.html', active: true },
+        { id: 'contact', num: '08', en: 'Contact', fa: 'ارتباط', href: 'index.html#contact' }
+      ],
+
+      ui: {
+        en: {
+          breadcrumbHome: 'Back to Portfolio',
+          breadcrumbCurrent: 'Tutorials & Courses',
+          pageHeading: 'Engineering Courses & Practical Tutorials',
+          heroSubtitle: 'Production Backend · Clean Architecture · Systems Rust · API Security',
+          pageSummary: 'Battle-tested curricula forged from real industrial automation systems, high-traffic API migrations, and 80+ hour live engineering bootcamps. Focused on architectural trade-offs, debugging mastery, and production readiness rather than toy examples.',
+          metrics: [
+            { value: '80+ HRS', label: 'Live Bootcamp Delivery' },
+            { value: '4 TRACKS', label: 'Structured Curricula' },
+            { value: '100%', label: 'Production-Oriented Labs' },
+            { value: '1-ON-1', label: 'Code Review & Mentoring' }
+          ],
+          catalogHeading: 'Structured Engineering Courses',
+          filters: {
+            all: 'All Tracks',
+            backend: 'Backend & Django',
+            architecture: 'Architecture & DDD',
+            systems: 'Rust & Systems',
+            security: 'Security & DevOps'
+          },
+          viewSyllabus: 'Inspect Full Syllabus',
+          enrollBtn: 'Request Enrollment / Mentoring',
+          labsHeading: 'Hands-On Engineering Tutorials & Mini-Labs',
+          labsDesc: 'Self-contained architectural walkthroughs and executable patterns you can apply immediately to production codebases.',
+          readLab: 'Open Lab Guide',
+          ctaKicker: 'CUSTOM WORKSHOPS & MENTORSHIP',
+          ctaTitle: 'Need 1-on-1 Architectural Mentoring or Team Training?',
+          ctaDesc: 'Available for personalized backend roadmaps, live code reviews, and tailored corporate workshops on Django, DDD/CQRS, Rust, and API hardening.',
+          ctaPrimaryBtn: 'Book a Session via Contact',
+          ctaSecondaryBtn: 'View Production Case Studies',
+          footerTagline: 'Software Engineer · Backend & Architecture',
+          modalLabels: {
+            overview: 'Course Overview & Engineering Goals',
+            prerequisites: 'Prerequisites',
+            outcomes: 'Key Engineering Outcomes',
+            syllabus: 'Module-by-Module Syllabus',
+            codePreview: 'Lab Architecture & Code Sample'
+          }
+        },
+        fa: {
+          breadcrumbHome: 'بازگشت به صفحه اصلی',
+          breadcrumbCurrent: 'آموزش‌ها و دوره‌ها',
+          pageHeading: 'دوره‌های مهندسی نرم‌افزار و آموزش‌های کاربردی',
+          heroSubtitle: 'بک‌اند عملیاتی · معماری تمیز · برنامه‌نویسی سیستمی Rust · امنیت API',
+          pageSummary: 'سرفصل‌های آموزشی مبتنی بر تجربه‌های واقعی در سامانه‌های اتوماسیون صنعتی، مهاجرت سرویس‌های پرترافیک و بیش از ۸۰ ساعت تدریس حضوری و منتورینگ. تمرکز بر تصمیمات معماری، مهارت عیب‌یابی عمیق و آماده‌سازی برای محیط Production است.',
+          metrics: [
+            { value: '۸۰+ ساعت', label: 'تدریس حضوری و کارگاهی' },
+            { value: '۴ مسیر', label: 'سرفصل تخصصی ساختاریافته' },
+            { value: '۱۰۰٪', label: 'پروژه‌محور و عملیاتی' },
+            { value: 'منتورینگ', label: 'بازبینی کد و راهنمایی فردی' }
+          ],
+          catalogHeading: 'دوره‌های تخصصی و کارگاه‌های مهندسی',
+          filters: {
+            all: 'همه دوره‌ها',
+            backend: 'بک‌اند و Django',
+            architecture: 'معماری و DDD',
+            systems: 'Rust و سیستم',
+            security: 'امنیت و DevOps'
+          },
+          viewSyllabus: 'مشاهده سرفصل‌های کامل دوره',
+          enrollBtn: 'ثبت درخواست شرکت در دوره / منتورینگ',
+          labsHeading: 'آموزش‌های کوتاه و کارگاه‌های عملی (Labs)',
+          labsDesc: 'راهنماهای گام‌به‌گام و الگوهای پیاده‌سازی که مستقیماً در پروژه‌های واقعی قابل استفاده هستند.',
+          readLab: 'مطالعه راهنمای عملی',
+          ctaKicker: 'منتورینگ فردی و آموزش سازمانی',
+          ctaTitle: 'نیاز به منتورینگ تخصصی یا برگزاری کارگاه برای تیم فنی دارید؟',
+          ctaDesc: 'برای طراحی نقشه راه یادگیری بک‌اند، بازبینی معماری و کدبیس، یا برگزاری کارگاه‌های تخصصی Django، DDD/CQRS، Rust و امنیت API در ارتباط باشید.',
+          ctaPrimaryBtn: 'ثبت درخواست در بخش ارتباط',
+          ctaSecondaryBtn: 'مشاهده پروژه‌های عملیاتی',
+          footerTagline: 'مهندس نرم‌افزار · بک‌اند و معماری سیستم',
+          footerBrand: 'پارسا',
+          footerCopyright: (year) => `© ${year} پارسا. تمامی حقوق محفوظ است.`,
+          modalLabels: {
+            overview: 'معرفی دوره و اهداف مهندسی',
+            prerequisites: 'پیش‌نیازهای دوره',
+            outcomes: 'دستاوردهای کلیدی پس از پایان دوره',
+            syllabus: 'سرفصل‌های ماژول‌به‌ماژول',
+            codePreview: 'نمونه کد و معماری کارگاه'
+          }
+        }
+      },
+
+      courses: [
+        {
+          slug: 'production-django-drf-bootcamp',
+          categoryKey: 'backend',
+          level: 'INTERMEDIATE → ADVANCED',
+          faLevel: 'متوسط تا پیشرفته',
+          duration: '80 HOURS · INTENSIVE',
+          faDuration: '۸۰ ساعت · جامع و عملیاتی',
+          stack: ['Python', 'Django & DRF', 'PostgreSQL', 'Redis & Celery', 'Docker'],
+          coverUrl: 'https://placehold.co/1200x675/171A1F/A88B62?text=Production+Django+%26+DRF+Engineering+Bootcamp',
+          en: {
+            title: 'Production Django & REST Framework Engineering Bootcamp',
+            tagline: 'From ORM internals and N+1 query elimination to async Celery workers, caching layers, and zero-downtime deployments.',
+            overview: 'Based on the 80-hour curriculum delivered at NetCollege, this course bridges the gap between basic Django tutorials and high-concurrency production systems.',
+            prerequisites: 'Solid Python fundamentals, basic HTTP/REST knowledge, and familiarity with SQL queries.',
+            outcomes: [
+              'Eliminate database bottlenecks using select_related, prefetch_related, EXPLAIN ANALYZE, and composite indexing.',
+              'Build idempotent REST APIs with OpenAPI (Swagger) contracts, JWT authentication, and granular permissions.',
+              'Offload heavy tasks reliably with Celery, RabbitMQ/Redis, and transactional outbox patterns.'
+            ],
+            modules: [
+              { num: 'M01', title: 'Django Internals, Request Lifecycle & Clean Project Layout', topics: 'Middleware pipeline, settings modularization, environment isolation, and custom management commands.' },
+              { num: 'M02', title: 'PostgreSQL Mastery & ORM Query Optimization', topics: 'Solving N+1 queries, atomic transactions, select_for_update locking, and index tuning.' },
+              { num: 'M03', title: 'Django REST Framework & Contract-First OpenAPI', topics: 'Serializers vs. service layer, pagination, throttling, versioning, and Swagger documentation.' },
+              { num: 'M04', title: 'Async Workers, Caching & Production Hardening', topics: 'Redis caching strategies, Celery retry policies, TDD with pytest, Docker & Nginx deployment.' }
+            ],
+            codeSample: `# Atomic & Concurrency-Safe Service Pattern in Django
+from django.db import transaction
+from django.db.models import F
+
+@transaction.atomic
+def reserve_inventory(sku: str, qty: int) -> bool:
+    updated = (
+        StockItem.objects
+        .select_for_update()
+        .filter(sku=sku, available__gte=qty)
+        .update(available=F("available") - qty)
+    )
+    if not updated:
+        raise InsufficientStockError(f"SKU {sku} out of stock")
+    OutboxEvent.objects.create(topic="inventory.reserved", payload={"sku": sku, "qty": qty})
+    return True`
+          },
+          fa: {
+            title: 'بوت‌کمپ جامع مهندسی Django و Django REST Framework در محیط عملیاتی',
+            tagline: 'از بهینه‌سازی عمیق کوئری‌های ORM و حذف N+1 تا پردازش‌های غیرهمزمان با Celery، کشینگ چندلایه و استقرار بدون وقفه.',
+            overview: 'این دوره بر اساس سرفصل‌های جامع ۸۰ ساعته تدریس‌شده در نت‌کالج طراحی شده است و فاصله میان آموزش‌های مقدماتی جنگو تا پیاده‌سازی سرویس‌های پرترافیک واقعی را پر می‌کند.',
+            prerequisites: 'تسلط بر مبانی زبان Python، آشنایی اولیه با مفاهیم HTTP/REST و شناخت پایه از پایگاه داده.',
+            outcomes: [
+              'شناسایی و رفع گلوگاه‌های دیتابیس با تحلیل EXPLAIN ANALYZE، مدیریت تراکنش‌ها و ایندکس‌گذاری اصولی.',
+              'طراحی APIهای استاندارد و مقاوم در برابر تکرار همراه با مستندسازی خودکار OpenAPI (Swagger).',
+              'پیاده‌سازی پردازش‌های پس‌زمینه با Celery و Redis و استقرار پروژه با Docker و Nginx.'
+            ],
+            modules: [
+              { num: 'فصل ۰۱', title: 'معماری داخلی Django و ساختاردهی استاندارد پروژه', topics: 'چرخه حیات درخواست، لایه Middleware، جداسازی تنظیمات محیطی و اصول کدنویسی تمیز.' },
+              { num: 'فصل ۰۲', title: 'تسلط بر PostgreSQL و بهینه‌سازی کوئری‌های ORM', topics: 'رفع مشکل N+1، تراکنش‌های اتمیک، قفل‌گذاری هم‌زمان (select_for_update) و تحلیل پلن اجرا.' },
+              { num: 'فصل ۰۳', title: 'طراحی حرفه‌ای REST API با DRF و OpenAPI', topics: 'جداسازی منطق تجاری از Serializerها، کنترل نرخ درخواست، نسخه‌بندی API و مستندسازی Swagger.' },
+              { num: 'فصل ۰۴', title: 'صف‌های غیرهمزمان، کشینگ و آماده‌سازی Production', topics: 'استراتژی‌های کش در Redis، مدیریت خطا در Celery، تست‌نویسی با pytest و استقرار با Docker.' }
+            ],
+            codeSample: `# الگوی سرویس تراکنشی و ایمن در برابر هم‌زمانی در Django
+from django.db import transaction
+from django.db.models import F
+
+@transaction.atomic
+def reserve_inventory(sku: str, qty: int) -> bool:
+    updated = (
+        StockItem.objects
+        .select_for_update()
+        .filter(sku=sku, available__gte=qty)
+        .update(available=F("available") - qty)
+    )
+    if not updated:
+        raise InsufficientStockError(f"SKU {sku} out of stock")
+    OutboxEvent.objects.create(topic="inventory.reserved", payload={"sku": sku, "qty": qty})
+    return True`
+          }
+        },
+        {
+          slug: 'ddd-cqrs-clean-architecture-python',
+          categoryKey: 'architecture',
+          level: 'ADVANCED',
+          faLevel: 'پیشرفته',
+          duration: '36 HOURS · WORKSHOP',
+          faDuration: '۳۶ ساعت · کارگاه معماری',
+          stack: ['DDD / BDD', 'CQRS', 'Event-Driven', 'Unit of Work', 'SOLID'],
+          coverUrl: 'https://placehold.co/1200x675/263E54/F8F8F6?text=Software+Architecture%2C+DDD+%26+CQRS+in+Python',
+          en: {
+            title: 'Software Architecture, DDD & CQRS in Python',
+            tagline: 'Decoupling complex business domains from frameworks using Aggregates, Domain Events, Repository, and Unit of Work patterns.',
+            overview: 'Designed for engineers maintaining growing enterprise codebases where fat models and tangled views slow down feature delivery and testing.',
+            prerequisites: 'Experience building backend applications in Python/Django or FastAPI.',
+            outcomes: [
+              'Model rich business invariants inside pure domain entities independent of ORM models.',
+              'Implement Repository, Service Layer, and Unit of Work patterns for deterministic testing.',
+              'Separate read/write workloads with CQRS and event-driven message buses.'
+            ],
+            modules: [
+              { num: 'M01', title: 'Tactical Domain-Driven Design & Bounded Contexts', topics: 'Entities, Value Objects, Aggregates, and protecting domain invariants.' },
+              { num: 'M02', title: 'Repository, Service Layer & Unit of Work', topics: 'Inverting dependencies so business rules never depend on SQLAlchemy or Django ORM.' },
+              { num: 'M03', title: 'Domain Events, Message Bus & CQRS', topics: 'Decoupling side effects, designing fast read models, and eventual consistency.' },
+              { num: 'M04', title: 'Architecture Decision Records (ADRs) & Trade-off Analysis', topics: 'Documenting architectural choices and knowing when NOT to over-engineer.' }
+            ],
+            codeSample: `# Pure Domain Command Handler decoupled from Framework & DB
+class ApproveShipmentHandler:
+    def __init__(self, uow: AbstractUnitOfWork, bus: MessageBus):
+        self.uow = uow
+        self.bus = bus
+
+    def handle(self, cmd: ApproveShipmentCommand) -> None:
+        with self.uow:
+            shipment = self.uow.shipments.get(cmd.shipment_id)
+            shipment.approve(inspector_id=cmd.actor_id)
+            self.uow.commit()
+        self.bus.publish_all(shipment.collect_events())`
+          },
+          fa: {
+            title: 'معماری نرم‌افزار، DDD و CQRS در پایتون',
+            tagline: 'جداسازی منطق پیچیده کسب‌وکار از فریم‌ورک‌ها با استفاده از الگوهای Aggregates، رویدادهای دامنه، Repository و Unit of Work.',
+            overview: 'ویژه مهندسانی که روی سیستم‌های سازمانی در حال رشد کار می‌کنند و می‌خواهند از پیچیدگی مدل‌های حجیم و وابستگی شدید کدبیس به جزئیات دیتابیس رهایی یابند.',
+            prerequisites: 'تجربه توسعه بک‌اند با Python (Django یا FastAPI) و آشنایی با برنامه‌نویسی شی‌ءگرا.',
+            outcomes: [
+              'مدل‌سازی قوانین هسته کسب‌وکار در لایه Domain به صورت کاملاً مستقل از مدل‌های ORM.',
+              'پیاده‌سازی الگوهای Repository، Service Layer و Unit of Work برای تست‌پذیری بالا.',
+              'تفکیک مسیرهای خواندن و نوشتن با الگوی CQRS و ارتباط رویدادمحور.'
+            ],
+            modules: [
+              { num: 'فصل ۰۱', title: 'مفاهیم تاکتیکی DDD و مرزبندی دامنه‌ها', topics: 'طراحی Entity، Value Object، Aggregate و حفاظت از قوانین دامنه.' },
+              { num: 'فصل ۰۲', title: 'الگوهای Repository، Service Layer و Unit of Work', topics: 'وارونه‌سازی وابستگی‌ها برای استقلال هسته سیستم از پایگاه داده.' },
+              { num: 'فصل ۰۳', title: 'رویدادهای دامنه (Domain Events) و الگوی CQRS', topics: 'مدیریت عوارض جانبی به صورت غیرهمزمان و طراحی مدل‌های خواندن سریع.' },
+              { num: 'فصل ۰۴', title: 'مستندسازی تصمیمات معماری (ADR) و تحلیل Trade-off', topics: 'نحوه ارزیابی هزینه و فایده الگوها و پرهیز از پیچیدگی غیرضروری.' }
+            ],
+            codeSample: `# هندلر دستور (Command Handler) مستقل از فریم‌ورک و دیتابیس
+class ApproveShipmentHandler:
+    def __init__(self, uow: AbstractUnitOfWork, bus: MessageBus):
+        self.uow = uow
+        self.bus = bus
+
+    def handle(self, cmd: ApproveShipmentCommand) -> None:
+        with self.uow:
+            shipment = self.uow.shipments.get(cmd.shipment_id)
+            shipment.approve(inspector_id=cmd.actor_id)
+            self.uow.commit()
+        self.bus.publish_all(shipment.collect_events())`
+          }
+        },
+        {
+          slug: 'rust-for-backend-and-systems-engineers',
+          categoryKey: 'systems',
+          level: 'BEGINNER → INTERMEDIATE',
+          faLevel: 'مقدماتی تا متوسط',
+          duration: '40 HOURS · HANDS-ON',
+          faDuration: '۴۰ ساعت · پروژه‌محور',
+          stack: ['Rust', 'Ownership & Lifetimes', 'UTF-8 & Parsers', 'Cargo Crates', 'Tokio'],
+          coverUrl: 'https://placehold.co/1200x675/171A1F/A88B62?text=Rust+for+Backend+%26+Systems+Engineers',
+          en: {
+            title: 'Rust for Backend & Systems Engineers',
+            tagline: 'Master ownership, zero-cost abstractions, safe UTF-8 text processing, and publishing production Cargo crates.',
+            overview: 'A practical transition guide for Python/JS backend developers who want to build high-throughput CLI tools, parsers, and memory-safe services in Rust.',
+            prerequisites: 'Prior programming experience in at least one backend language (Python, Go, C++, or TypeScript).',
+            outcomes: [
+              'Reason confidently about Ownership, Borrowing, Lifetimes, and Result/Option error handling.',
+              'Build zero-allocation fast paths and safe Unicode/UTF-8 text processing utilities.',
+              'Structure, benchmark, test, and publish clean library crates on Crates.io.'
+            ],
+            modules: [
+              { num: 'M01', title: 'Ownership, Borrowing & Algebraic Data Types', topics: 'Stack vs. heap memory, Enums, Pattern Matching, and idiomatic error propagation.' },
+              { num: 'M02', title: 'Traits, Generics & Zero-Cost Abstractions', topics: 'Designing ergonomic library APIs, iterators, and avoiding unnecessary heap allocations.' },
+              { num: 'M03', title: 'UTF-8 Safety, String Processing & Crate Publishing', topics: 'Lessons from building persian-normalizer: byte vs. char boundaries and Cargo docs.' },
+              { num: 'M04', title: 'Concurrency & Async Services with Tokio', topics: 'Send/Sync traits, channels, and building low-latency network workers.' }
+            ],
+            codeSample: `// Zero-allocation fast-path check pattern in Rust
+pub fn normalize_fast<'a>(input: &'a str) -> std::borrow::Cow<'a, str> {
+    if !input.chars().any(|c| matches!(c, '\\u{064A}' | '\\u{0643}')) {
+        return std::borrow::Cow::Borrowed(input);
+    }
+    let out: String = input.chars().map(|c| match c {
+        '\\u{064A}' => '\\u{06CC}',
+        '\\u{0643}' => '\\u{06A9}',
+        other => other,
+    }).collect();
+    std::borrow::Cow::Owned(out)
+}`
+          },
+          fa: {
+            title: 'برنامه‌نویسی Rust برای مهندسان بک‌اند و سیستم',
+            tagline: 'تسلط بر Ownership، انتزاع‌های بدون سربار، پردازش ایمن UTF-8 و انتشار کتابخانه‌های استاندارد در Crates.io.',
+            overview: 'مسیر آموزشی عملی برای توسعه‌دهندگان بک‌اند (Python/JS) که قصد دارند ابزارهای پرسرعت سیستمی، پارسرها و سرویس‌های ایمن در حافظه را با Rust توسعه دهند.',
+            prerequisites: 'تجربه برنامه‌نویسی در حداقل یک زبان بک‌اند (مانند Python، C++، Go یا TypeScript).',
+            outcomes: [
+              'درک عمیق مفاهیم Ownership، Borrowing، Lifetimes و مدیریت خطا با Result و Option.',
+              'طراحی مسیرهای سریع بدون تخصیص حافظه اضافی و پردازش امن رشته‌های یونیکد و UTF-8.',
+              'ساختاردهی، بنچمارک‌گیری، تست و انتشار پکیج‌های استاندارد در مخزن Crates.io.'
+            ],
+            modules: [
+              { num: 'فصل ۰۱', title: 'مفاهیم Ownership، Borrowing و انواع داده‌ای', topics: 'مدیریت حافظه بدون Garbage Collector، ساختار Enum و الگوی تطابق (Pattern Matching).' },
+              { num: 'فصل ۰۲', title: 'Traits، Generics و بهینه‌سازی حافظه', topics: 'طراحی رابط‌های کتابخانه‌ای استاندارد و کاهش تخصیص‌های غیرضروری در Heap.' },
+              { num: 'فصل ۰۳', title: 'پردازش امن UTF-8 و انتشار کتابخانه (Crate)', topics: 'تجربیات واقعی توسعه کتابخانه نرمال‌ساز فارسی و مستندسازی استاندارد Cargo.' },
+              { num: 'فصل ۰۴', title: 'هم‌زمانی ایمن و سرویس‌های غیرهمزمان با Tokio', topics: 'مفاهیم Send/Sync، کانال‌های ارتباطی و پیاده‌سازی سرویس‌های شبکه‌ای کم‌تاخیر.' }
+            ],
+            codeSample: `// الگوی بررسی سریع بدون تخصیص حافظه اضافی در Rust
+pub fn normalize_fast<'a>(input: &'a str) -> std::borrow::Cow<'a, str> {
+    if !input.chars().any(|c| matches!(c, '\\u{064A}' | '\\u{0643}')) {
+        return std::borrow::Cow::Borrowed(input);
+    }
+    let out: String = input.chars().map(|c| match c {
+        '\\u{064A}' => '\\u{06CC}',
+        '\\u{0643}' => '\\u{06A9}',
+        other => other,
+    }).collect();
+    std::borrow::Cow::Owned(out)
+}`
+          }
+        },
+        {
+          slug: 'application-security-owasp-linux-hardening',
+          categoryKey: 'security',
+          level: 'INTERMEDIATE',
+          faLevel: 'متوسط',
+          duration: '30 HOURS · DEFENSIVE & OFFENSIVE',
+          faDuration: '۳۰ ساعت · دفاعی و تهاجمی',
+          stack: ['OWASP Top 10', 'API Security', 'Linux Hardening', 'Nginx & TLS', 'Audit Logging'],
+          coverUrl: 'https://placehold.co/1200x675/263E54/F8F8F6?text=Application+Security%2C+OWASP+%26+Linux+Hardening',
+          en: {
+            title: 'Application Security, OWASP API Hardening & Linux Defense',
+            tagline: 'Practical threat modeling, BOLA/IDOR mitigation, token security, and enterprise Linux server hardening.',
+            overview: 'Synthesizes LPIC-1/2/3, CEH, CySA+, and Security+ practices into actionable defensive controls for backend developers and DevOps engineers.',
+            prerequisites: 'Basic familiarity with Linux terminal, HTTP headers, and web authentication flows.',
+            outcomes: [
+              'Identify and remediate OWASP API Top 10 flaws including BOLA/IDOR, Mass Assignment, and SSRF.',
+              'Harden Ubuntu/Debian production servers, SSH, firewalls, DNS, and Nginx reverse proxies.',
+              'Design tamper-evident audit trails and structured security telemetry.'
+            ],
+            modules: [
+              { num: 'M01', title: 'OWASP API Top 10 & Broken Access Control', topics: 'Object-level authorization, JWT pitfalls, rate limiting, and schema validation.' },
+              { num: 'M02', title: 'Injection, SSRF & Cryptographic Hygiene', topics: 'Parameterized queries, safe outbound HTTP clients, password hashing (Argon2), and secrets management.' },
+              { num: 'M03', title: 'Linux Server & Network Perimeter Hardening', topics: 'SSH lockdown, UFW/iptables, Fail2Ban, TLS 1.3 cipher suites, and Nginx security headers.' },
+              { num: 'M04', title: 'Incident Forensics & Audit-Ready Logging', topics: 'Correlation IDs, structured JSON logs, and log retention policies.' }
+            ],
+            codeSample: `# Hardened Nginx Security Headers & Rate Limiting Snippet
+limit_req_zone $binary_remote_addr zone=api_limit:10m rate=15r/s;
+
+server {
+    listen 443 ssl http2;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+
+    location /api/ {
+        limit_req zone=api_limit burst=30 nodelay;
+        proxy_pass http://backend_upstream;
+    }
+}`
+          },
+          fa: {
+            title: 'امنیت کاربردی، مقاوم‌سازی API بر پایه OWASP و امنیت لینوکس',
+            tagline: 'مدل‌سازی تهدید، مقابله با آسیب‌پذیری‌های BOLA/IDOR، امنیت توکن‌ها و مقاوم‌سازی سرورهای لینوکس در محیط عملیاتی.',
+            overview: 'ترکیبی کاربردی از استانداردهای LPIC-1/2/3، CEH، CySA+ و Security+ برای توسعه‌دهندگان بک‌اند و مهندسان دواپس که مسئول امنیت سرویس‌ها هستند.',
+            prerequisites: 'آشنایی اولیه با محیط خط فرمان لینوکس، هدرهای HTTP و مکانیزم‌های احراز هویت وب.',
+            outcomes: [
+              'شناسایی و رفع آسیب‌پذیری‌های OWASP API Top 10 از جمله BOLA/IDOR، Mass Assignment و SSRF.',
+              'مقاوم‌سازی سرورهای لینوکس، SSH، فایروال، DNS و تنظیمات امنیتی Nginx و TLS.',
+              'طراحی سیستم ثبت وقایع (Audit Logging) و تله‌متری امنیتی برای ردیابی رخدادها.'
+            ],
+            modules: [
+              { num: 'فصل ۰۱', title: 'بررسی OWASP API Top 10 و کنترل دسترسی', topics: 'کنترل دسترسی در سطح آبجکت، خطاهای رایج در JWT، محدودسازی نرخ درخواست و اعتبارسنجی ورودی.' },
+              { num: 'فصل ۰۲', title: 'مقابله با تزریق کد، SSRF و مدیریت امن کلیدها', topics: 'کوئری‌های پارامتری، ایمن‌سازی درخواست‌های خروجی سرور و ذخیره‌سازی امن رمزها.' },
+              { num: 'فصل ۰۳', title: 'مقاوم‌سازی سرور لینوکس و لایه شبکه', topics: 'ایمن‌سازی SSH، پیکربندی فایروال، گواهی‌های TLS و هدرهای امنیتی در Nginx.' },
+              { num: 'فصل ۰۴', title: 'لاگینگ آماده ممیزی و تحلیل رخدادها', topics: 'استفاده از Correlation ID، ساختاردهی لاگ‌های JSON و سیاست‌های نگهداری داده.' }
+            ],
+            codeSample: `# تنظیمات محدودسازی نرخ درخواست و هدرهای امنیتی در Nginx
+limit_req_zone $binary_remote_addr zone=api_limit:10m rate=15r/s;
+
+server {
+    listen 443 ssl http2;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+
+    location /api/ {
+        limit_req zone=api_limit burst=30 nodelay;
+        proxy_pass http://backend_upstream;
+    }
+}`
+          }
+        }
+      ],
+
+      labs: [
+        {
+          id: 'idempotent-api-design-lab',
+          tag: 'BACKEND RELIABILITY',
+          faTag: 'پایداری بک‌اند',
+          readTime: '10 MIN LAB',
+          faReadTime: '۱۰ دقیقه کارگاه عملی',
+          en: {
+            title: 'Designing Idempotent POST Endpoints with Redis & PostgreSQL',
+            excerpt: 'How to prevent duplicate financial or inventory mutations when mobile clients retry requests over unstable connections.',
+            steps: [
+              '1. Require an explicit Idempotency-Key header (UUIDv4) on state-mutating POST endpoints.',
+              '2. Compute a SHA-256 fingerprint of the canonical request payload to detect conflicting key reuse.',
+              '3. Acquire a short-lived Redis lock (SET NX PX) while executing the database transaction, then persist the response envelope.',
+              '4. Return the cached HTTP status and body on subsequent retries with the same key and payload.'
+            ],
+            codeSnippet: `// HTTP Request & Replay Contract
+POST /api/v1/payments/capture
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+X-Idempotency-Replay: true`
+          },
+          fa: {
+            title: 'طراحی اندپوینت‌های Idempotent در بک‌اند با Redis و PostgreSQL',
+            excerpt: 'چگونه هنگام قطع و وصل شدن اینترنت کاربران، از ثبت تکراری تراکنش‌ها یا تغییر دوباره موجودی جلوگیری کنیم.',
+            steps: [
+              '۱. دریافت هدر اجباری Idempotency-Key (در قالب UUID) در درخواست‌های حساس POST.',
+              '۲. محاسبه هش SHA-256 از بدنه درخواست برای تشخیص استفاده مجدد از یک کلید با داده متفاوت.',
+              '۳. ایجاد قفل موقت در Redis هنگام اجرای تراکنش دیتابیس و ذخیره نتیجه نهایی پاسخ.',
+              '۴. بازگرداندن مستقیم پاسخ ذخیره‌شده در صورت ارسال مجدد همان درخواست توسط کلاینت.'
+            ],
+            codeSnippet: `// قرارداد درخواست و پاسخ تکراری (Replay)
+POST /api/v1/payments/capture
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+X-Idempotency-Replay: true`
+          }
+        },
+        {
+          id: 'postgres-explain-analyze-lab',
+          tag: 'DATABASE TUNING',
+          faTag: 'بهینه‌سازی دیتابیس',
+          readTime: '12 MIN LAB',
+          faReadTime: '۱۲ دقیقه کارگاه عملی',
+          en: {
+            title: 'Reading PostgreSQL EXPLAIN (ANALYZE, BUFFERS) Like a Systems Engineer',
+            excerpt: 'Spotting sequential scans, high buffer reads, and misordered composite indexes on multi-million-row tables.',
+            steps: [
+              '1. Always run EXPLAIN (ANALYZE, BUFFERS) instead of plain EXPLAIN to observe actual row counts and shared block hits.',
+              '2. Compare Estimated Rows vs. Actual Rows; large discrepancies signal stale statistics requiring ANALYZE.',
+              '3. Order composite index columns by equality predicates first, followed by range/sort columns.',
+              '4. Verify Index Only Scans when covering indexes eliminate heap fetches.'
+            ],
+            codeSnippet: `EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, next_review_at
+FROM review_items
+WHERE learner_id = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+  AND next_review_at <= NOW()
+ORDER BY next_review_at ASC
+LIMIT 25;`
+          },
+          fa: {
+            title: 'تحلیل حرفه‌ای خروجی EXPLAIN (ANALYZE, BUFFERS) در PostgreSQL',
+            excerpt: 'تشخیص اسکن‌های ترتیبی پرهزینه، بررسی مصرف بافرها و ترتیب صحیح ستون‌ها در ایندکس‌های ترکیبی.',
+            steps: [
+              '۱. همیشه از گزینه (ANALYZE, BUFFERS) استفاده کنید تا زمان واقعی اجرا و تعداد بلاک‌های خوانده‌شده مشخص شود.',
+              '۲. مقایسه تعداد سطرهای تخمینی با سطرهای واقعی؛ اختلاف زیاد نشانه نیاز به به‌روزرسانی آمار جدول است.',
+              '۳. در ایندکس‌های ترکیبی، ابتدا ستون‌های شرط مساوی (=) و سپس ستون‌های بازه‌ای یا مرتب‌سازی را قرار دهید.',
+              '۴. بررسی استفاده از Index Only Scan برای کاهش مراجعه مستقیم به جدول اصلی.'
+            ],
+            codeSnippet: `EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, next_review_at
+FROM review_items
+WHERE learner_id = '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+  AND next_review_at <= NOW()
+ORDER BY next_review_at ASC
+LIMIT 25;`
+          }
+        }
+      ]
+    };
+
+    /* ==========================================================================
+       STATE & UTILITIES (Synchronized with index.html)
+       ========================================================================== */
+    const state = {
+      lang: document.documentElement.getAttribute('lang') || 'en',
+      theme: document.documentElement.getAttribute('data-theme') || 'light',
+      activeFilter: 'all'
+    };
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function localizeDigits(str, lang = state.lang) {
+      if (str === null || str === undefined) return '';
+      const text = String(str);
+      if (lang !== 'fa') return text;
+      return text.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    }
+
+    function formatText(str, lang = state.lang) {
+      return escapeHTML(localizeDigits(str, lang));
+    }
+
+    function applyTheme(theme) {
+      state.theme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('parsa_theme', theme);
+
+      const sunIcon = document.getElementById('icon-sun');
+      const moonIcon = document.getElementById('icon-moon');
+      if (theme === 'dark') {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    function applyLanguage(lang) {
+      state.lang = lang;
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+      localStorage.setItem('parsa_lang', lang);
+
+      document.getElementById('lang-label').textContent = lang === 'en' ? 'FA' : 'EN';
+      syncSectionTypewritersLanguage();
+      renderAll();
+    }
+
+    /* ==========================================================================
+       RENDERERS
+       ========================================================================== */
+    function renderNavigation() {
+      const desktopNav = document.getElementById('desktop-nav');
+      const mobileNavLinks = document.getElementById('mobile-nav-links');
+      const isEn = state.lang === 'en';
+
+      const logoEn = document.getElementById('brand-logo-en');
+      const logoFa = document.getElementById('brand-logo-fa');
+      if (logoEn && logoFa) {
+        logoEn.classList.toggle('hidden', !isEn);
+        logoFa.classList.toggle('hidden', isEn);
+      }
+
+      const navbarBrandEl = document.getElementById('navbar-brand-name');
+      if (navbarBrandEl) {
+        const brandText = isEn ? 'PARSA' : 'پارسا';
+        navbarBrandEl.className = isEn ? 'font-mono-tech font-bold text-xl tracking-tight' : 'font-bold text-xl tracking-tight';
+        navbarBrandEl.innerHTML = `${escapeHTML(brandText)}<span style="color: var(--accent-secondary);">.</span>`;
+      }
+
+      desktopNav.innerHTML = COURSES_DATA.nav.map(item => `
+        <a href="${item.href}" class="px-2.5 py-1.5 rounded-md text-xs xl:text-sm font-medium transition-colors flex items-center gap-1.5 ${item.active ? 'nav-active-pill font-semibold' : 'hover:bg-black/5 dark:hover:bg-white/5'}">
+          <span>${isEn ? item.en : item.fa}</span>
+        </a>
+      `).join('');
+
+      mobileNavLinks.innerHTML = COURSES_DATA.nav.map(item => `
+        <a href="${item.href}" class="mobile-nav-item p-3 rounded-lg surface-card text-sm font-medium flex items-center gap-2.5 ${item.active ? 'nav-active-pill' : ''}">
+          <span class="font-mono-tech text-xs" style="color: var(--accent-secondary);">${formatText(item.num)}</span>
+          <span>${isEn ? item.en : item.fa}</span>
+        </a>
+      `).join('');
+    }
+
+    function renderHeroAndFilters() {
+      const t = COURSES_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const year = document.getElementById('current-year')?.textContent || String(new Date().getFullYear());
+
+      document.querySelector('#breadcrumb-home span').textContent = localizeDigits(t.breadcrumbHome);
+      document.getElementById('breadcrumb-current').textContent = localizeDigits(t.breadcrumbCurrent);
+      document.getElementById('page-heading').textContent = localizeDigits(t.pageHeading);
+      document.getElementById('hero-subtitle').textContent = localizeDigits(t.heroSubtitle);
+      document.getElementById('page-summary').textContent = localizeDigits(t.pageSummary);
+
+      document.getElementById('training-metrics').innerHTML = t.metrics.map(m => `
+        <div class="surface-card p-4">
+          <div class="font-mono-tech text-lg sm:text-xl font-bold mb-1" style="color: var(--accent-secondary);">${formatText(m.value)}</div>
+          <div class="text-xs" style="color: var(--text-secondary);">${formatText(m.label)}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('catalog-heading').textContent = localizeDigits(t.catalogHeading);
+      document.getElementById('category-filters').innerHTML = Object.entries(t.filters).map(([key, label]) => {
+        const isActive = state.activeFilter === key;
+        return `
+          <button
+            type="button"
+            data-filter="${key}"
+            class="filter-btn px-3.5 py-2 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${isActive ? 'btn-primary border-transparent' : 'btn-secondary'}"
+          >
+            ${formatText(label)}
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.activeFilter = btn.getAttribute('data-filter');
+          renderHeroAndFilters();
+          renderCoursesGrid();
+        });
+      });
+
+      // CTA & Footer
+      document.getElementById('cta-kicker').textContent = localizeDigits(t.ctaKicker);
+      document.getElementById('cta-title').textContent = localizeDigits(t.ctaTitle);
+      document.getElementById('cta-desc').textContent = localizeDigits(t.ctaDesc);
+      document.querySelector('#cta-primary-btn span').textContent = localizeDigits(t.ctaPrimaryBtn);
+      document.getElementById('cta-secondary-btn').textContent = localizeDigits(t.ctaSecondaryBtn);
+      document.getElementById('footer-tagline').textContent = localizeDigits(t.footerTagline);
+
+      const footerBrandEl = document.getElementById('footer-brand-name');
+      if (footerBrandEl) {
+        const brandText = isEn ? 'PARSA' : (t.footerBrand || 'پارسا');
+        footerBrandEl.className = isEn ? 'font-mono-tech font-bold text-sm' : 'font-bold text-sm';
+        footerBrandEl.innerHTML = `${formatText(brandText)}<span style="color: var(--accent-secondary);">.</span>`;
+      }
+
+      const footerCopyEl = document.getElementById('footer-copyright');
+      if (footerCopyEl) {
+        const faYear = localizeDigits(year, 'fa');
+        footerCopyEl.textContent = isEn
+          ? `© ${year} PARSA. All rights reserved.`
+          : (typeof t.footerCopyright === 'function' ? localizeDigits(t.footerCopyright(faYear), 'fa') : `© ${faYear} پارسا. تمامی حقوق محفوظ است.`);
+      }
+    }
+
+    function renderCoursesGrid() {
+      const t = COURSES_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const filtered = state.activeFilter === 'all'
+        ? COURSES_DATA.courses
+        : COURSES_DATA.courses.filter(c => c.categoryKey === state.activeFilter);
+
+      document.getElementById('courses-grid').innerHTML = filtered.map(course => {
+        const content = isEn ? course.en : course.fa;
+        const levelLabel = isEn ? course.level : course.faLevel;
+        const durationLabel = isEn ? course.duration : course.faDuration;
+
+        return `
+          <article class="surface-card overflow-hidden flex flex-col justify-between group">
+            <div>
+              <div class="aspect-[16/9] overflow-hidden hairline-b bg-black/10">
+                <img
+                  src="${course.coverUrl}"
+                  alt="${escapeHTML(content.title)}"
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+
+              <div class="p-6 sm:p-7">
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono-tech mb-3" style="color: var(--accent-secondary);">
+                  <span>${formatText(levelLabel)}</span>
+                  <span>${formatText(durationLabel)}</span>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-bold mb-2.5">${formatText(content.title)}</h3>
+                <p class="text-sm mb-5" style="color: var(--text-secondary);">${formatText(content.tagline)}</p>
+
+                <div class="flex flex-wrap gap-1.5 mb-4">
+                  ${course.stack.map(tech => `<span class="tech-badge">${formatText(tech)}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="px-6 sm:px-7 pb-6 flex flex-col sm:flex-row gap-2.5">
+              <button
+                type="button"
+                data-course-slug="${course.slug}"
+                class="open-syllabus-btn btn-primary flex-1 py-3 px-4 text-sm font-medium inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>${formatText(t.viewSyllabus)}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+              <a
+                href="index.html#contact"
+                class="btn-secondary py-3 px-4 text-xs font-mono-tech inline-flex items-center justify-center"
+              >
+                ${isEn ? 'Enroll' : 'ثبت‌نام'}
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.open-syllabus-btn').forEach(btn => {
+        btn.addEventListener('click', () => openCourseModal(btn.getAttribute('data-course-slug')));
+      });
+    }
+
+    function renderLabs() {
+      const t = COURSES_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+
+      document.getElementById('labs-heading').textContent = localizeDigits(t.labsHeading);
+      document.getElementById('labs-desc').textContent = localizeDigits(t.labsDesc);
+
+      document.getElementById('labs-list').innerHTML = COURSES_DATA.labs.map(lab => {
+        const content = isEn ? lab.en : lab.fa;
+        const tagLabel = isEn ? lab.tag : lab.faTag;
+        const timeLabel = isEn ? lab.readTime : lab.faReadTime;
+        const actionLabel = isEn ? `${formatText(t.readLab)} &rarr;` : `&larr; ${formatText(t.readLab)}`;
+
+        return `
+          <article class="py-6 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="max-w-2xl">
+              <div class="flex flex-wrap items-center gap-3 text-xs font-mono-tech mb-2" style="color: var(--accent-secondary);">
+                <span>${formatText(tagLabel)}</span>
+                <span>•</span>
+                <span>${formatText(timeLabel)}</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2">${formatText(content.title)}</h3>
+              <p class="text-sm" style="color: var(--text-secondary);">${formatText(content.excerpt)}</p>
+            </div>
+            <button
+              type="button"
+              data-lab-id="${lab.id}"
+              class="open-lab-btn btn-secondary px-4 py-2.5 text-xs font-mono-tech shrink-0 self-start md:self-center cursor-pointer"
+            >
+              ${actionLabel}
+            </button>
+          </article>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.open-lab-btn').forEach(btn => {
+        btn.addEventListener('click', () => openLabModal(btn.getAttribute('data-lab-id')));
+      });
+    }
+
+    /* ==========================================================================
+       MODALS (Course Syllabus & Lab Guide)
+       ========================================================================== */
+    function openCourseModal(slug) {
+      const course = COURSES_DATA.courses.find(c => c.slug === slug);
+      if (!course) return;
+
+      const t = COURSES_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const content = isEn ? course.en : course.fa;
+      const labels = t.modalLabels;
+
+      document.getElementById('modal-tag').textContent = isEn ? 'SYLLABUS' : 'سرفصل‌های دوره';
+      document.getElementById('modal-course-title').textContent = localizeDigits(content.title);
+
+      document.getElementById('course-modal-body').innerHTML = `
+        <div class="pb-6 hairline-b flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="font-mono-tech text-xs block mb-1" style="color: var(--accent-secondary);">
+              ${formatText(isEn ? course.level : course.faLevel)} · ${formatText(isEn ? course.duration : course.faDuration)}
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold">${formatText(content.title)}</h2>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            ${course.stack.map(s => `<span class="tech-badge">${formatText(s)}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="surface-card p-5">
+            <h4 class="font-mono-tech text-xs uppercase mb-2" style="color: var(--accent-secondary);">${formatText(labels.overview)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.overview)}</p>
+          </div>
+          <div class="surface-card p-5">
+            <h4 class="font-mono-tech text-xs uppercase mb-2" style="color: var(--accent-secondary);">${formatText(labels.prerequisites)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.prerequisites)}</p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.outcomes)}</h4>
+          <ul class="space-y-2.5 text-sm">
+            ${content.outcomes.map(o => `
+              <li class="surface-card p-3.5 flex items-start gap-2.5">
+                <span class="font-mono-tech font-bold" style="color: var(--accent-secondary);">&check;</span>
+                <span>${formatText(o)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.syllabus)}</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${content.modules.map(m => `
+              <div class="surface-card p-5">
+                <span class="font-mono-tech text-xs font-bold block mb-1" style="color: var(--accent-secondary);">${formatText(m.num)}</span>
+                <h5 class="font-bold text-base mb-1.5">${formatText(m.title)}</h5>
+                <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(m.topics)}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.codePreview)}</h4>
+          <pre class="code-window p-4 text-xs sm:text-[13px] font-mono-tech overflow-x-auto leading-relaxed"><code>${escapeHTML(content.codeSample)}</code></pre>
+        </div>
+
+        <div class="pt-4 hairline-t flex justify-end">
+          <a href="index.html#contact" class="btn-primary px-6 py-3 text-sm font-medium inline-flex items-center gap-2">
+            <span>${formatText(t.enrollBtn)}</span>
+          </a>
+        </div>
+      `;
+
+      document.getElementById('course-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openLabModal(id) {
+      const lab = COURSES_DATA.labs.find(l => l.id === id);
+      if (!lab) return;
+
+      const isEn = state.lang === 'en';
+      const content = isEn ? lab.en : lab.fa;
+
+      document.getElementById('modal-tag').textContent = formatText(isEn ? lab.tag : lab.faTag);
+      document.getElementById('modal-course-title').textContent = localizeDigits(content.title);
+
+      document.getElementById('course-modal-body').innerHTML = `
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold mb-3">${formatText(content.title)}</h2>
+          <p class="text-sm sm:text-base mb-6" style="color: var(--text-secondary);">${formatText(content.excerpt)}</p>
+          <div class="space-y-3 mb-6">
+            ${content.steps.map(step => `
+              <div class="surface-card p-4 text-sm leading-relaxed">${formatText(step)}</div>
+            `).join('')}
+          </div>
+          <pre class="code-window p-4 text-xs sm:text-sm font-mono-tech overflow-x-auto leading-relaxed"><code>${escapeHTML(content.codeSnippet)}</code></pre>
+        </div>
+      `;
+
+      document.getElementById('course-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCourseModal() {
+      const modal = document.getElementById('course-modal');
+      if (!modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    /* ==========================================================================
+       INITIALIZATION, SCROLL CONTROLLER & TYPEWRITER
+       ========================================================================== */
+    function renderAll() {
+      renderNavigation();
+      renderHeroAndFilters();
+      renderCoursesGrid();
+      renderLabs();
+    }
+
+    function setMobileMenuState(isOpen) {
+      const nav = document.getElementById('mobile-nav');
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const iconMenu = document.getElementById('icon-menu');
+      const iconClose = document.getElementById('icon-close');
+
+      nav.classList.toggle('hidden', !isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      iconMenu.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    }
+
+    const typewriterControllers = [];
+
+    function getTypewriterTargetText(el) {
+      const lang = state.lang || 'en';
+      if (lang === 'fa' && el.hasAttribute('data-typewriter-fa')) return el.getAttribute('data-typewriter-fa');
+      if (lang === 'en' && el.hasAttribute('data-typewriter-en')) return el.getAttribute('data-typewriter-en');
+      return el.getAttribute('data-typewriter') || '';
+    }
+
+    function syncSectionTypewritersLanguage() {
+      typewriterControllers.forEach(ctrl => ctrl.resetForCurrentLanguage());
+    }
+
+    function initSectionTypewriters() {
+      document.querySelectorAll('[data-typewriter]').forEach((el, index) => {
+        el.innerHTML = `<span class="tw-text"></span><span class="typewriter-cursor" aria-hidden="true"></span>`;
+        const textSpan = el.querySelector('.tw-text');
+        let fullText = getTypewriterTargetText(el);
+        let charIndex = 0;
+        let isDeleting = false;
+        let timerId = null;
+
+        function scheduleNext(fn, delay) {
+          if (timerId !== null) clearTimeout(timerId);
+          timerId = setTimeout(fn, delay);
+        }
+
+        function tick() {
+          if (!isDeleting) {
+            charIndex = Math.min(charIndex + 1, fullText.length);
+            textSpan.textContent = fullText.slice(0, charIndex);
+            if (charIndex === fullText.length) {
+              isDeleting = true;
+              scheduleNext(tick, 3500);
+              return;
+            }
+            scheduleNext(tick, 75);
+          } else {
+            charIndex = Math.max(charIndex - 1, 0);
+            textSpan.textContent = fullText.slice(0, charIndex);
+            if (charIndex === 0) {
+              isDeleting = false;
+              scheduleNext(tick, 600);
+              return;
+            }
+            scheduleNext(tick, 40);
+          }
+        }
+
+        function resetForCurrentLanguage() {
+          fullText = getTypewriterTargetText(el);
+          charIndex = 0;
+          isDeleting = false;
+          textSpan.textContent = '';
+          scheduleNext(tick, 120);
+        }
+
+        typewriterControllers.push({ resetForCurrentLanguage });
+        scheduleNext(tick, index * 220);
+      });
+    }
+
+    function initCustomScrollController() {
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+      const percentLabel = document.getElementById('scroll-percent-label');
+      if (!scrollTopBtn || !percentLabel) return;
+
+      let ticking = false;
+      function updateScrollMetrics() {
+        ticking = false;
+        const docEl = document.documentElement;
+        const scrollTop = window.scrollY || docEl.scrollTop || 0;
+        const scrollableHeight = Math.max(0, docEl.scrollHeight - window.innerHeight);
+        const percentage = scrollableHeight > 0 ? Math.round(Math.min(1, Math.max(0, scrollTop / scrollableHeight)) * 100) : 0;
+
+        percentLabel.textContent = `${percentage}%`;
+        scrollTopBtn.classList.toggle('is-visible', scrollTop > 320);
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(updateScrollMetrics);
+        }
+      }, { passive: true });
+
+      scrollTopBtn.addEventListener('click', () => {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      });
+
+      updateScrollMetrics();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+
+      applyTheme(state.theme);
+      applyLanguage(state.lang);
+
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        applyTheme(state.theme === 'light' ? 'dark' : 'light');
+      });
+
+      document.getElementById('lang-toggle').addEventListener('click', () => {
+        applyLanguage(state.lang === 'en' ? 'fa' : 'en');
+      });
+
+      document.getElementById('mobile-menu-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !document.getElementById('mobile-nav').classList.contains('hidden');
+        setMobileMenuState(!isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        const nav = document.getElementById('mobile-nav');
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        if (!nav.classList.contains('hidden') && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+          setMobileMenuState(false);
+        }
+      });
+
+      document.getElementById('close-course-modal').addEventListener('click', closeCourseModal);
+      document.getElementById('course-modal-backdrop').addEventListener('click', closeCourseModal);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeCourseModal();
+      });
+
+      initSectionTypewriters();
+      initCustomScrollController();
+    });
+  </script>
+</body>
+</html>

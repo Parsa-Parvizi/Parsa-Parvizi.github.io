@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARSA. | Engineering Projects & Case Studies</title>
+  <meta name="description" content="Production architectures, open-source Rust systems libraries, and enterprise platform rebuilds by Parsa Parvizi." />
+  <meta name="theme-color" content="#171A1F" />
+
+  <!-- Icons & Social Link Preview -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23171A1F'/%3E%3Crect x='5' y='5' width='54' height='54' rx='11' fill='none' stroke='%23F8F8F6' stroke-opacity='0.35' stroke-width='2'/%3E%3Cpath d='M21 46V18h13.5c5.523 0 10 4.477 10 10s-4.477 10-10 10H21' fill='none' stroke='%23F8F8F6' stroke-width='4.5' stroke-linecap='square'/%3E%3Crect x='41' y='41' width='9' height='9' rx='2' fill='%23A88B62'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23171A1F'/%3E%3Cpath d='M58 128V52h38c15.464 0 28 12.536 28 28s-12.536 28-28 28H58' fill='none' stroke='%23F8F8F6' stroke-width='12' stroke-linecap='square'/%3E%3Crect x='114' y='114' width='24' height='24' rx='5' fill='%23A88B62'/%3E%3C/svg%3E" />
+
+  <!-- Prevent Theme & Language FOUC (Synchronized with index.html & course.html) -->
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('parsa_theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const savedLang = localStorage.getItem('parsa_lang') || 'en';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'fa' ? 'rtl' : 'ltr');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Manrope, Inter, JetBrains Mono & Vazirmatn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM TOKENS (Identical to index.html)
+       ========================================================================== */
+    :root {
+      --palette-charcoal: #171A1F;
+      --palette-deep-blue: #263E54;
+      --palette-bronze: #A88B62;
+      --palette-stone: #E9E7E1;
+      --palette-off-white: #F8F8F6;
+
+      --bg-primary: var(--palette-off-white);
+      --bg-surface: var(--palette-stone);
+      --bg-elevated: #FFFFFF;
+      --bg-code: #171A1F;
+      --text-code: #F8F8F6;
+      --text-primary: var(--palette-charcoal);
+      --text-secondary: #4A515B;
+      --text-muted: #717882;
+      --accent-primary: var(--palette-deep-blue);
+      --accent-primary-hover: #1C2F40;
+      --accent-secondary: var(--palette-bronze);
+      --border-hairline: rgba(23, 26, 31, 0.12);
+      --border-strong: rgba(23, 26, 31, 0.24);
+      --header-backdrop: rgba(248, 248, 246, 0.88);
+      --shadow-subtle: 0 4px 20px -2px rgba(23, 26, 31, 0.05);
+
+      --font-en-heading: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-en-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-fa: 'Vazirmatn', Tahoma, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: var(--palette-charcoal);
+      --bg-surface: #1E2229;
+      --bg-elevated: #232830;
+      --bg-code: #121418;
+      --text-code: #E9E7E1;
+      --text-primary: var(--palette-off-white);
+      --text-secondary: #A5ACB8;
+      --text-muted: #767E8C;
+      --accent-primary: #3D6487;
+      --accent-primary-hover: #4C7AA3;
+      --accent-secondary: #C2A376;
+      --border-hairline: rgba(248, 248, 246, 0.11);
+      --border-strong: rgba(248, 248, 246, 0.22);
+      --header-backdrop: rgba(23, 26, 31, 0.88);
+      --shadow-subtle: 0 8px 28px -4px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ==========================================================================
+       2. TYPOGRAPHY & DIRECTIONAL RULES
+       ========================================================================== */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5.5rem;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-secondary) var(--bg-surface);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .typewriter-cursor { animation: none; }
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    html[lang="en"] body {
+      font-family: var(--font-en-body);
+      line-height: 1.65;
+    }
+
+    html[lang="en"] h1,
+    html[lang="en"] h2,
+    html[lang="en"] h3,
+    html[lang="en"] h4,
+    html[lang="en"] .font-heading {
+      font-family: var(--font-en-heading);
+      letter-spacing: -0.02em;
+    }
+
+    html[lang="fa"] body,
+    html[lang="fa"] h1,
+    html[lang="fa"] h2,
+    html[lang="fa"] h3,
+    html[lang="fa"] h4,
+    html[lang="fa"] .font-heading {
+      font-family: var(--font-fa);
+      font-feature-settings: "ss01";
+    }
+
+    html[lang="fa"] body {
+      line-height: 1.85;
+    }
+
+    .font-mono-tech {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    html[lang="fa"] button,
+    html[lang="fa"] input,
+    html[lang="fa"] select,
+    html[lang="fa"] label,
+    html[lang="fa"] a,
+    html[lang="fa"] span,
+    html[lang="fa"] p,
+    html[lang="fa"] li,
+    html[lang="fa"] figcaption,
+    html[lang="fa"] #project-modal,
+    html[lang="fa"] #scroll-top-btn {
+      font-family: var(--font-fa);
+    }
+
+    html[lang="fa"] .font-mono-tech,
+    html[lang="fa"] .tech-badge,
+    html[lang="fa"] .section-index {
+      font-family: var(--font-fa) !important;
+      letter-spacing: 0;
+    }
+
+    html[lang="fa"] #hero-subtitle {
+      font-family: var(--font-fa);
+      direction: rtl;
+      unicode-bidi: isolate;
+      letter-spacing: 0;
+    }
+
+    html[lang="fa"] #site-footer {
+      direction: rtl;
+      text-align: right;
+      font-family: var(--font-fa);
+    }
+
+    html[lang="fa"] #site-footer .footer-copy-line {
+      font-family: var(--font-fa);
+      direction: rtl;
+      unicode-bidi: isolate;
+      text-align: left;
+    }
+
+    /* ==========================================================================
+       3. EDITORIAL & ENGINEERING COMPONENT STYLES
+       ========================================================================== */
+    .surface-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.25s ease, box-shadow 0.2s ease;
+    }
+
+    .surface-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .elevated-panel {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .hairline-b { border-bottom: 1px solid var(--border-hairline); }
+    .hairline-t { border-top: 1px solid var(--border-hairline); }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: #F8F8F6;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface);
+    }
+
+    .tech-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: 0.375rem;
+      background-color: var(--bg-primary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-hairline);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      direction: ltr;
+    }
+
+    .section-index {
+      font-family: var(--font-mono);
+      color: var(--accent-secondary);
+      font-size: 0.875rem;
+      line-height: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      height: 1.5rem;
+      min-height: 1.5rem;
+      vertical-align: top;
+      overflow: hidden;
+      direction: ltr;
+    }
+
+    html[lang="fa"] .section-index {
+      font-family: var(--font-fa);
+      line-height: 1.65rem;
+      height: 1.65rem;
+      min-height: 1.65rem;
+      direction: rtl;
+      unicode-bidi: isolate;
+      letter-spacing: 0;
+    }
+
+    .section-index .tw-text {
+      display: inline-block;
+      line-height: inherit;
+      white-space: nowrap;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 0.5em;
+      height: 1em;
+      flex-shrink: 0;
+      background-color: var(--accent-secondary);
+      margin-inline-start: 0.25rem;
+      animation: cursor-blink 0.9s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .engineering-grid-bg {
+      background-image:
+        linear-gradient(to right, var(--border-hairline) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-hairline) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 45%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 45%, transparent 85%);
+    }
+
+    .code-window {
+      background-color: var(--bg-code);
+      color: var(--text-code);
+      border: 1px solid var(--border-hairline);
+      border-radius: 0.625rem;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .nav-active-pill {
+      background-color: rgba(168, 139, 98, 0.14);
+      color: var(--accent-secondary);
+      border: 1px solid rgba(168, 139, 98, 0.32);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+      border-inline-start: 1px solid var(--border-hairline);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 9999px;
+      border: 2px solid var(--bg-surface);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
+
+    .scroll-top-fab {
+      position: fixed;
+      bottom: 1.5rem;
+      inset-inline-end: 1.5rem;
+      z-index: 35;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, border-color 0.2s ease;
+    }
+    .scroll-top-fab.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="selection:bg-[#A88B62]/25">
+
+  <!-- ========================================================================
+       STICKY HEADER & NAVIGATION (Synchronized with index.html & course.html)
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 hairline-b transition-colors duration-200" style="background-color: var(--header-backdrop); backdrop-filter: blur(12px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo linking back to index.html -->
+      <a href="index.html#home" class="flex items-center gap-2.5 group focus:outline-none" aria-label="PARSA Home">
+        <svg id="brand-logo-en" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <rect x="1.5" y="1.5" width="25" height="25" rx="6" stroke="currentColor" stroke-width="1.5" />
+          <path d="M9.5 20V8H15C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16H9.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" />
+          <rect x="17.5" y="17.5" width="3.5" height="3.5" rx="0.75" fill="#A88B62" />
+        </svg>
+        <svg id="brand-logo-fa" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden shrink-0 transition-transform duration-300 group-hover:scale-105">
+          <rect x="1.5" y="1.5" width="25" height="25" rx="6" stroke="currentColor" stroke-width="1.5" />
+          <path d="M7 14.5H20.5V10.5M14.5 14.5V10.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="10.5" cy="18.5" r="1.35" fill="#A88B62" />
+          <circle cx="14.5" cy="18.5" r="1.35" fill="#A88B62" />
+          <circle cx="12.5" cy="21.2" r="1.35" fill="#A88B62" />
+        </svg>
+        <span id="navbar-brand-name" class="font-bold text-xl tracking-tight">
+          PARSA<span style="color: var(--accent-secondary);">.</span>
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav id="desktop-nav" class="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Primary Navigation"></nav>
+
+      <!-- Controls -->
+      <div class="flex items-center gap-2">
+        <button id="lang-toggle" type="button" class="btn-secondary px-3 py-1.5 text-xs font-mono-tech font-medium flex items-center gap-1.5 cursor-pointer" aria-label="Switch Language">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          <span id="lang-label">FA</span>
+        </button>
+
+        <button id="theme-toggle" type="button" class="btn-secondary p-2 cursor-pointer" aria-label="Toggle Light/Dark Theme">
+          <svg id="icon-sun" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+        </button>
+
+        <button id="mobile-menu-btn" type="button" class="lg:hidden btn-secondary p-2 cursor-pointer" aria-label="Open Navigation Menu" aria-expanded="false">
+          <svg id="icon-menu" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="14" y2="17" />
+          </svg>
+          <svg id="icon-close" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav" class="hidden lg:hidden hairline-t px-4 py-5" style="background-color: var(--bg-primary);">
+      <nav id="mobile-nav-links" class="grid grid-cols-2 gap-2"></nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN CONTENT: PROJECTS & ARCHITECTURAL CASE STUDIES
+       ======================================================================== -->
+  <main id="projects-main">
+    <!-- Hero Header -->
+    <section class="relative overflow-hidden py-14 sm:py-20 hairline-b">
+      <div class="absolute inset-0 engineering-grid-bg pointer-events-none"></div>
+
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb back to index.html -->
+        <div class="mb-6 flex items-center gap-2 text-xs font-mono-tech" style="color: var(--text-muted);">
+          <a href="index.html" id="breadcrumb-home" class="hover:underline inline-flex items-center gap-1.5" style="color: var(--accent-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            <span></span>
+          </a>
+          <span>/</span>
+          <span id="breadcrumb-current"></span>
+        </div>
+
+        <div class="max-w-3xl">
+          <span class="section-index mb-3" data-typewriter="04 // PROJECTS & CASE STUDIES" data-typewriter-en="04 // PROJECTS & CASE STUDIES" data-typewriter-fa="۰۴ // پروژه‌ها و مطالعات موردی">04 // PROJECTS & CASE STUDIES</span>
+          <h1 id="page-heading" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-4"></h1>
+          <p id="hero-subtitle" class="font-mono-tech text-xs sm:text-sm tracking-wide uppercase py-3 my-4 hairline-t hairline-b" style="color: var(--text-secondary);"></p>
+          <p id="page-summary" class="text-base sm:text-lg mb-8 max-w-2xl" style="color: var(--text-secondary);"></p>
+
+          <!-- Engineering Metrics Strip -->
+          <div id="project-metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects & Case Studies Archive -->
+    <section id="projects-archive" class="py-16 sm:py-24 hairline-b">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <span class="section-index mb-2" data-typewriter="ARCHIVE // PRODUCTION SYSTEMS" data-typewriter-en="ARCHIVE // PRODUCTION SYSTEMS" data-typewriter-fa="آرشیو // سامانه‌های عملیاتی">ARCHIVE // PRODUCTION SYSTEMS</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <h2 id="archive-heading" class="text-2xl sm:text-3xl font-bold"></h2>
+              <span id="projects-count" class="font-mono-tech text-xs px-3 py-1 rounded-md surface-card"></span>
+            </div>
+          </div>
+
+          <!-- Domain Filter Tabs -->
+          <div id="domain-filters" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Case Studies Grid -->
+        <div id="projects-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"></div>
+      </div>
+    </section>
+
+    <!-- Architecture Collaboration CTA Banner -->
+    <section class="py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="surface-card p-7 sm:p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="max-w-2xl">
+            <span id="cta-kicker" class="font-mono-tech text-xs uppercase tracking-wider block mb-2" style="color: var(--accent-secondary);"></span>
+            <h2 id="cta-title" class="text-2xl sm:text-3xl font-bold mb-2.5"></h2>
+            <p id="cta-desc" class="text-sm sm:text-base" style="color: var(--text-secondary);"></p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 shrink-0">
+            <a href="index.html#contact" id="cta-primary-btn" class="btn-primary px-6 py-3.5 text-sm font-medium inline-flex items-center gap-2">
+              <span></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+            <a href="course.html" id="cta-secondary-btn" class="btn-secondary px-5 py-3.5 text-sm font-medium"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER (Identical to index.html & course.html)
+       ======================================================================== -->
+  <footer id="site-footer" class="hairline-t py-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="color: var(--text-muted);">
+      <div class="flex items-center gap-2">
+        <span id="footer-brand-name" class="font-mono-tech font-bold text-sm" style="color: var(--text-primary);">PARSA<span style="color: var(--accent-secondary);">.</span></span>
+        <span id="footer-tagline"></span>
+      </div>
+      <div id="footer-copyright" class="footer-copy-line font-mono-tech">
+        &copy; <span id="current-year"></span> PARSA. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Scroll-to-Top Action -->
+  <button
+    id="scroll-top-btn"
+    type="button"
+    aria-label="Scroll to top"
+    class="scroll-top-fab elevated-panel px-3.5 py-2.5 flex items-center gap-2 text-xs font-mono-tech cursor-pointer hover:border-[#A88B62]"
+  >
+    <span id="scroll-percent-label" style="color: var(--accent-secondary);">0%</span>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="12" y1="19" x2="12" y2="5" />
+      <polyline points="5 12 12 5 19 12" />
+    </svg>
+  </button>
+
+  <!-- ========================================================================
+       PROJECT CASE STUDY MODAL (ALL 11 STRUCTURED SECTIONS)
+       ======================================================================== -->
+  <div id="project-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
+    <div class="fixed inset-0 bg-black/65 backdrop-blur-sm transition-opacity" id="project-modal-backdrop"></div>
+    
+    <div class="relative min-h-screen flex items-start justify-center p-2 sm:p-6 lg:p-10">
+      <div class="relative w-full max-w-5xl elevated-panel overflow-hidden my-4">
+        
+        <!-- Sticky Modal Top Bar -->
+        <div class="sticky top-0 z-20 px-5 sm:px-8 py-4 hairline-b flex items-center justify-between gap-4" style="background-color: var(--bg-elevated);">
+          <div class="flex items-center gap-3 min-w-0">
+            <span id="modal-case-study-tag" class="section-index shrink-0">CASE STUDY</span>
+            <h3 id="modal-project-title" class="text-base sm:text-lg font-bold truncate"></h3>
+          </div>
+          <button type="button" id="close-project-modal" class="btn-secondary px-3 py-1.5 text-xs font-mono-tech flex items-center gap-1.5 shrink-0 cursor-pointer">
+            <span>ESC</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Case Study Body (11 Structured Sections) -->
+        <div id="project-modal-body" class="p-5 sm:p-8 lg:p-10 space-y-10"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       PROJECTS DATA & APPLICATION ENGINE
+       ======================================================================== -->
+  <script>
+    const PROJECTS_PAGE_DATA = {
+      nav: [
+        { id: 'home', num: '01', en: 'Home', fa: 'خانه', href: 'index.html#home' },
+        { id: 'about', num: '02', en: 'About', fa: 'درباره من', href: 'index.html#about' },
+        { id: 'skills', num: '03', en: 'Skills', fa: 'مهارت‌ها', href: 'index.html#skills' },
+        { id: 'projects', num: '04', en: 'Projects', fa: 'پروژه‌ها', href: 'projects.html', active: true },
+        { id: 'articles', num: '05', en: 'Articles', fa: 'مقالات', href: 'index.html#articles' },
+        { id: 'books', num: '06', en: 'Book Reviews', fa: 'مرور کتاب‌ها', href: 'index.html#books' },
+        { id: 'tutorial', num: '07', en: 'Tutorial', fa: 'آموزش‌ها', href: 'course.html' },
+        { id: 'contact', num: '08', en: 'Contact', fa: 'ارتباط', href: 'index.html#contact' }
+      ],
+
+      ui: {
+        en: {
+          breadcrumbHome: 'Back to Portfolio',
+          breadcrumbCurrent: 'Projects & Case Studies',
+          pageHeading: 'Selected Engineering Case Studies',
+          heroSubtitle: 'Backend Architecture · Enterprise Modernization · Open-Source Rust · Distributed Workflows',
+          pageSummary: 'Production architectures, open-source Rust libraries, and enterprise platform rebuilds documented across 11 engineering dimensions: problem statement, system topology, normalized database schemas, API contracts, security controls, and architectural trade-offs.',
+          metrics: [
+            { value: '11 SECTIONS', label: 'Deep Architecture Specs' },
+            { value: '0% LOSS', label: 'Concurrent Data Integrity' },
+            { value: '3NF + ACID', label: 'Relational Core Modeling' },
+            { value: 'OSS + ENT', label: 'Systems & Enterprise Scope' }
+          ],
+          archiveHeading: 'Engineering Case Studies',
+          projectsCountLabel: (n) => `${n} CASE STUDIES`,
+          filters: {
+            all: 'All Systems',
+            enterprise: 'Enterprise & APIs',
+            backend: 'Backend & Workflows',
+            systems: 'Rust & Open Source'
+          },
+          viewCaseStudy: 'Inspect Architecture & Details',
+          ctaKicker: 'ARCHITECTURAL CONSULTING & DELIVERY',
+          ctaTitle: 'Planning a System Rebuild or High-Throughput Backend?',
+          ctaDesc: 'Let’s discuss database modeling, OpenAPI contracts, legacy platform migrations, or custom Rust/Python engineering for your team.',
+          ctaPrimaryBtn: 'Discuss Your Project',
+          ctaSecondaryBtn: 'Explore Engineering Tutorials',
+          footerTagline: 'Software Engineer · Backend & Architecture',
+          modalBadge: 'CASE STUDY',
+          caseStudyLabels: {
+            introduction: '01. Introduction',
+            overview: '02. Overview & Problem Statement',
+            features: '03. Key Capabilities & Features',
+            architecture: '04. System Architecture',
+            techStack: '05. Technology Stack',
+            databaseDesign: '06. Database Design',
+            apiDesign: '07. API Design',
+            security: '08. Application Security',
+            screenshots: '09. Real Screenshots',
+            challenges: '10. Engineering Challenges',
+            decisions: '11. Architectural Decisions'
+          }
+        },
+        fa: {
+          breadcrumbHome: 'بازگشت به صفحه اصلی',
+          breadcrumbCurrent: 'پروژه‌ها و مطالعات موردی',
+          pageHeading: 'مطالعات موردی و پروژه‌های منتخب مهندسی',
+          heroSubtitle: 'معماری بک‌اند · نوسازی پلتفرم‌های سازمانی · کتابخانه‌های متن‌باز Rust · جریان‌های کاری توزیع‌شده',
+          pageSummary: 'معماری‌های عملیاتی، کتابخانه‌های متن‌باز Rust و بازطراحی پلتفرم‌های سازمانی که در ۱۱ بخش مهندسی شامل تعریف مسئله، توپولوژی سیستم، طراحی اسکیمای دیتابیس، قراردادهای API، کنترل‌های امنیتی و تصمیمات فنی مستندسازی شده‌اند.',
+          metrics: [
+            { value: '۱۱ بخش', label: 'مستندسازی کامل معماری' },
+            { value: 'صفر درصد', label: 'اتلاف داده زیر بار هم‌زمان' },
+            { value: '3NF + ACID', label: 'مدل‌سازی رابطه‌ای دقیق' },
+            { value: 'سازمانی و متن‌باز', label: 'تنوع حوزه‌های اجرایی' }
+          ],
+          archiveHeading: 'آرشیو مطالعات موردی پروژه‌ها',
+          projectsCountLabel: (n) => `${n} مطالعه موردی`,
+          filters: {
+            all: 'همه پروژه‌ها',
+            enterprise: 'سازمانی و OpenAPI',
+            backend: 'بک‌اند و جریان کاری',
+            systems: 'Rust و متن‌باز'
+          },
+          viewCaseStudy: 'مشاهده معماری و جزئیات کامل',
+          ctaKicker: 'مشاوره معماری و پیاده‌سازی سیستم',
+          ctaTitle: 'قصد بازطراحی سیستم قدیمی یا توسعه بک‌اند پرترافیک را دارید؟',
+          ctaDesc: 'برای مشاوره طراحی پایگاه داده، استانداردسازی قراردادهای OpenAPI، مهاجرت از سیستم‌های Legacy یا توسعه با Python و Rust در ارتباط باشید.',
+          ctaPrimaryBtn: 'گفت‌وگو درباره پروژه شما',
+          ctaSecondaryBtn: 'مشاهده آموزش‌ها و دوره‌ها',
+          footerTagline: 'مهندس نرم‌افزار · بک‌اند و معماری سیستم',
+          footerBrand: 'پارسا',
+          footerCopyright: (year) => `© ${year} پارسا. تمامی حقوق محفوظ است.`,
+          modalBadge: 'مطالعه موردی',
+          caseStudyLabels: {
+            introduction: '۰۱. معرفی پروژه (Introduction)',
+            overview: '۰۲. هدف و مسئله (Overview)',
+            features: '۰۳. قابلیت‌ها (Features)',
+            architecture: '۰۴. معماری سیستم (Architecture)',
+            techStack: '۰۵. فناوری‌ها (Tech Stack)',
+            databaseDesign: '۰۶. طراحی پایگاه داده (Database Design)',
+            apiDesign: '۰۷. طراحی API (API Design)',
+            security: '۰۸. ملاحظات امنیتی (Security)',
+            screenshots: '۰۹. تصاویر واقعی (Screenshots)',
+            challenges: '۱۰. چالش‌های مهندسی (Challenges)',
+            decisions: '۱۱. تصمیمات فنی (Decisions)'
+          }
+        }
+      },
+
+      projects: [
+        {
+          slug: 'avenlingo-learning-platform',
+          domainKey: 'backend',
+          year: '2025',
+          faYear: '۱۴۰۴',
+          category: 'EdTech & Adaptive Backend · Django & PostgreSQL',
+          faCategory: 'فناوری آموزشی و بک‌اند تطبیقی · Django و PostgreSQL',
+          stackSummary: ['Python', 'Django REST', 'PostgreSQL', 'Redis & Celery'],
+          en: {
+            title: 'Avenlingo — Adaptive Language Learning & Spaced Repetition Platform',
+            tagline: 'Scalable backend architecture for interactive language lessons, spaced repetition scheduling, and real-time learner progress telemetry.',
+            introduction: 'Avenlingo is a structured language-learning backend platform engineered to deliver personalized practice sessions, deterministic review intervals, and low-latency progress tracking across multilingual learners.',
+            overview: 'Language learning platforms fail when session state, review intervals, and content progression are loosely coupled or recomputed inefficiently on every request. Avenlingo centralizes curriculum graphs, learner mastery states, and async analytics into transactional boundaries.',
+            features: [
+              'Spaced-repetition scheduling engine computing next-review windows and mastery decay accurately.',
+              'Structured lesson, vocabulary, and exercise progression with idempotent submission endpoints.',
+              'Redis-backed caching for high-read curriculum catalogs and active session state.',
+              'Asynchronous Celery workers for streak calculation, weekly learner reports, and audit logging.'
+            ],
+            architecture: 'Modular Django service layer separating curriculum domain rules, spaced-repetition scheduling calculations, and learner progress persistence, backed by PostgreSQL transactions and Redis cache/queue infrastructure.',
+            databaseDesign: `CREATE TABLE learners (
+  id UUID PRIMARY KEY,
+  native_locale VARCHAR(16) NOT NULL,
+  target_locale VARCHAR(16) NOT NULL,
+  streak_days INT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE review_items (
+  id BIGSERIAL PRIMARY KEY,
+  learner_id UUID NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
+  lesson_item_id UUID NOT NULL,
+  ease_factor NUMERIC(4,2) NOT NULL DEFAULT 2.50,
+  interval_days INT NOT NULL DEFAULT 1,
+  next_review_at TIMESTAMPTZ NOT NULL,
+  UNIQUE(learner_id, lesson_item_id)
+);
+
+CREATE INDEX idx_review_items_due ON review_items (learner_id, next_review_at);`,
+            apiDesign: `POST /api/v1/sessions/reviews/submit
+Headers: { "Authorization": "Bearer <token>", "Idempotency-Key": "rev-8841-item12" }
+Request:
+{
+  "lesson_item_id": "itm_719b2e",
+  "quality_score": 4,
+  "response_time_ms": 1420
+}
+Response 200 OK:
+{
+  "lesson_item_id": "itm_719b2e",
+  "next_interval_days": 6,
+  "next_review_at": "2026-12-02T08:00:00Z",
+  "mastery_state": "REVIEWING"
+}`,
+            security: [
+              'Strict object-level authorization ensuring learners only read or mutate their own review state and progress logs.',
+              'Idempotency keys on review submissions preventing duplicate interval shifts from flaky mobile retries.',
+              'Parameterized queries, rate limiting on auth/session endpoints, and structured security event auditing.'
+            ],
+            challenges: 'Preventing duplicate review submissions during unstable mobile connections while keeping due-item queries fast as per-learner review history grows.',
+            decisions: 'Enforced unique composite constraints per learner and item alongside idempotent submission handling and a composite index on (learner_id, next_review_at).'
+          },
+          fa: {
+            title: 'اون‌لینگو (Avenlingo) — پلتفرم یادگیری زبان و تکرار با فاصله هوشمند',
+            tagline: 'معماری بک‌اند مقیاس‌پذیر برای درس‌های تعاملی، زمان‌بندی تکرار با فاصله (Spaced Repetition) و ثبت دقیق پیشرفت زبان‌آموزان.',
+            introduction: 'پروژه Avenlingo یک بک‌اند ساختاریافته برای یادگیری زبان است که جلسات تمرینی هدفمند، بازه‌های مرور استاندارد و رهگیری کم‌تاخیر سطح تسلط زبان‌آموزان را فراهم می‌کند.',
+            overview: 'در سامانه‌های آموزشی، اگر وضعیت جلسه تمرینی، الگوریتم تکرار با فاصله و پیشرفت درس‌ها بدون مرزهای تراکنشی مشخص مدیریت شوند، در زمان قطعی شبکه یا درخواست‌های مکرر دچار ناهماهنگی می‌شوند. این معماری هسته درس، مرور و گزارش‌گیری را منظم و قابل اتکا نگه می‌دارد.',
+            features: [
+              'موتور زمان‌بندی تکرار با فاصله برای محاسبه دقیق زمان مرور بعدی و سطح تسلط روی هر آیتم.',
+              'مدیریت ساختاریافته درس‌ها، واژگان و تمرین‌ها با اندپوینت‌های ثبت پاسخ ایمن در برابر تکرار.',
+              'استفاده از کش Redis برای تسریع خواندن محتوای پرتکرار و وضعیت لحظه‌ای جلسات.',
+              'پردازش پس‌زمینه با Celery برای محاسبه استمرار روزانه، آمار دوره‌ای و ثبت لاگ‌های ممیزی.'
+            ],
+            architecture: 'معماری لایه‌ای ماژولار در Django با جداسازی منطق دامنه یادگیری، محاسبات تکرار با فاصله و لایه دسترسی به داده، همراه با تراکنش‌های PostgreSQL و صف و کش Redis.',
+            databaseDesign: `CREATE TABLE learners (
+  id UUID PRIMARY KEY,
+  native_locale VARCHAR(16) NOT NULL,
+  target_locale VARCHAR(16) NOT NULL,
+  streak_days INT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE review_items (
+  id BIGSERIAL PRIMARY KEY,
+  learner_id UUID NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
+  lesson_item_id UUID NOT NULL,
+  ease_factor NUMERIC(4,2) NOT NULL DEFAULT 2.50,
+  interval_days INT NOT NULL DEFAULT 1,
+  next_review_at TIMESTAMPTZ NOT NULL,
+  UNIQUE(learner_id, lesson_item_id)
+);
+
+CREATE INDEX idx_review_items_due ON review_items (learner_id, next_review_at);`,
+            apiDesign: `POST /api/v1/sessions/reviews/submit
+Headers: { "Authorization": "Bearer <token>", "Idempotency-Key": "rev-8841-item12" }
+Request:
+{
+  "lesson_item_id": "itm_719b2e",
+  "quality_score": 4,
+  "response_time_ms": 1420
+}
+Response 200 OK:
+{
+  "lesson_item_id": "itm_719b2e",
+  "next_interval_days": 6,
+  "next_review_at": "2026-12-02T08:00:00Z",
+  "mastery_state": "REVIEWING"
+}`,
+            security: [
+              'کنترل دسترسی در سطح آبجکت تا هر کاربر فقط به سوابق مرور و پیشرفت خود دسترسی و تغییر داشته باشد.',
+              'پشتیبانی از کلید یکتایی درخواست (Idempotency-Key) برای جلوگیری از ثبت تکراری پاسخ هنگام ناپایداری اتصال.',
+              'استفاده از کوئری‌های پارامتری، محدودسازی نرخ درخواست و ثبت وقایع امنیتی.'
+            ],
+            challenges: 'جلوگیری از ثبت دوباره یک تمرین در شرایط شبکه ناپایدار و حفظ سرعت واکشی آیتم‌های سررسیدشده با افزایش حجم تاریخچه مرور کاربران.',
+            decisions: 'اعمال محدودیت یکتایی ترکیبی روی (learner_id, lesson_item_id) همراه با Idempotency-Key و ایجاد ایندکس ترکیبی برای کوئری‌های زمان مرور.'
+          },
+          screenshots: [
+            {
+              url: 'https://placehold.co/1200x700/171A1F/A88B62?text=Avenlingo+Spaced+Repetition+%26+API+Architecture',
+              enCaption: 'Spaced-Repetition State Engine & Low-Latency Session APIs',
+              faCaption: 'موتور وضعیت تکرار با فاصله و معماری APIهای کم‌تاخیر Avenlingo'
+            },
+            {
+              url: 'https://placehold.co/1200x700/263E54/F8F8F6?text=PostgreSQL+Mastery+Schema+%26+Async+Workers',
+              enCaption: 'Relational Mastery Schema & Background Progress Workers',
+              faCaption: 'طراحی جداول رابطه‌ای پیشرفت و پردازشگرهای پس‌زمینه'
+            }
+          ]
+        },
+        {
+          slug: 'mehrsan-enterprise-platform-rebuild',
+          domainKey: 'enterprise',
+          year: '2026',
+          faYear: '۱۴۰۵',
+          category: 'Enterprise Platform · OpenAPI & Cross-Border Specs',
+          faCategory: 'مهرسان · پلتفرم سازمانی، OpenAPI و تعامل بین‌المللی',
+          stackSummary: ['OpenAPI (Swagger)', 'Normalized SQL', 'API Security', 'Cross-Cultural Specs'],
+          en: {
+            title: 'Mehrsan — Enterprise Platform Rebuild, OpenAPI Contracts & International Liaison',
+            tagline: 'Full architectural modernization of Mehrsan’s legacy enterprise platform paired with contract-first OpenAPI specifications and cross-border technical alignment.',
+            introduction: 'Executed at Mehrsan Co., this project rebuilt a fragmented legacy enterprise platform around versioned OpenAPI (Swagger) contracts, normalized relational schemas, hardened API security, and structured international technical communication.',
+            overview: 'The legacy corporate system suffered from undocumented ad-hoc endpoints, denormalized duplicate records, inconsistent error payloads, and friction between domestic engineering teams and international technical partners during integration and requirement negotiations.',
+            features: [
+              'Contract-first OpenAPI 3.1 (Swagger) specification governing request/response schemas, auth flows, and error envelopes.',
+              'Full relational database normalization (3NF) eliminating redundant records, orphaned states, and update anomalies.',
+              'Hardened API security controls including token validation, scope enforcement, rate limiting, and audit trails.',
+              'Structured bilingual technical requirement specs and cross-cultural engineering alignment with international stakeholders.'
+            ],
+            architecture: 'Decoupled API gateway and service boundary driven by an authoritative OpenAPI contract, backed by a normalized relational core database and standardized observability/security middleware.',
+            databaseDesign: `CREATE TABLE organizations (
+  id UUID PRIMARY KEY,
+  legal_name VARCHAR(255) NOT NULL,
+  country_code CHAR(2) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE api_contracts (
+  id UUID PRIMARY KEY,
+  org_id UUID NOT NULL REFERENCES organizations(id),
+  version_tag VARCHAR(32) NOT NULL,
+  spec_hash CHAR(64) NOT NULL,
+  status VARCHAR(24) NOT NULL
+);
+
+CREATE TABLE integration_partners (
+  id UUID PRIMARY KEY,
+  contract_id UUID NOT NULL REFERENCES api_contracts(id),
+  partner_code VARCHAR(64) UNIQUE NOT NULL,
+  timezone_iana VARCHAR(64) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE
+);`,
+            apiDesign: `POST /api/v1/integrations/partner-sync
+Headers:
+  Authorization: Bearer <scoped_jwt>
+  X-Contract-Version: 2026.1
+  Idempotency-Key: mhr-sync-88210
+Request:
+{
+  "partner_code": "INTL_PARTNER_EU_04",
+  "batch_ref": "SYNC-2026-11-26-A",
+  "records_count": 120
+}
+Response 202 Accepted:
+{
+  "status": "QUEUED_FOR_VALIDATION",
+  "schema_validated": true,
+  "correlation_id": "req_9f41c8a2"
+}`,
+            security: [
+              'Strict schema & payload validation at the API boundary preventing mass assignment and malformed type injection.',
+              'Least-privilege token scopes, TLS enforcement, and structured security event logging.',
+              'Clear SLA, security compliance, and acceptance criteria documented across international stakeholder handoffs.'
+            ],
+            challenges: 'Aligning evolving business requirements, database schema constraints, and security expectations across multilingual technical teams and international partners without ambiguity.',
+            decisions: 'Adopted OpenAPI as the single source of truth for API contracts alongside normalized relational tables and formal bilingual technical specifications prior to implementation.'
+          },
+          fa: {
+            title: 'مهرسان (Mehrsan) — بازطراحی پلتفرم سازمانی، قراردادهای OpenAPI و هماهنگی بین‌الملل',
+            tagline: 'نوسازی کامل معماری پلتفرم قدیمی شرکت مهرسان همراه با استانداردسازی OpenAPI (Swagger)، نرمال‌سازی دیتابیس و مدیریت مذاکرات فنی بین‌المللی.',
+            introduction: 'این پروژه در شرکت مهرسان با هدف بازطراحی کامل پلتفرم قدیمی شرکت اجرا شد و ترکیبی از مهندسی بک‌اند، طراحی قراردادهای API مبتنی بر OpenAPI (Swagger)، امنیت API، معماری پایگاه داده و راهبری ارتباطات فنی بین‌المللی را در بر می‌گیرد.',
+            overview: 'سامانه پیشین به دلیل نبود مستندات یکپارچه، ساختار داده‌ای غیرنرمال، خطاهای ناهمگون و چالش‌های ناشی از تفاوت زبان و فرهنگ فنی در تعامل با طرف‌های خارجی، در توسعه و یکپارچه‌سازی با کندی مواجه بود.',
+            features: [
+              'طراحی قراردادهای یکپارچه و نسخه‌پذیر مبتنی بر OpenAPI (Swagger) برای شفافیت کامل ورودی‌ها، خروجی‌ها و خطاها.',
+              'نرمال‌سازی اصولی پایگاه داده رابطه‌ای برای حذف افزونگی داده‌ها و حفظ یکپارچگی مرجع.',
+              'مقاوم‌سازی امنیت API شامل کنترل سطح دسترسی، اعتبارسنجی دقیق درخواست‌ها و ثبت وقایع امنیتی.',
+              'تدوین مشخصات فنی دقیق و مدیریت مذاکرات و هماهنگی‌های فنی بین‌المللی و بین‌فرهنگی.'
+            ],
+            architecture: 'جداسازی شفاف مرزهای سرویس و اعتبارسنجی قراردادها بر پایه OpenAPI به عنوان منبع حقیقت (Single Source of Truth) در کنار هسته پایگاه داده نرمال‌شده و لایه‌های کنترلی امنیت و لاگینگ.',
+            databaseDesign: `CREATE TABLE organizations (
+  id UUID PRIMARY KEY,
+  legal_name VARCHAR(255) NOT NULL,
+  country_code CHAR(2) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE api_contracts (
+  id UUID PRIMARY KEY,
+  org_id UUID NOT NULL REFERENCES organizations(id),
+  version_tag VARCHAR(32) NOT NULL,
+  spec_hash CHAR(64) NOT NULL,
+  status VARCHAR(24) NOT NULL
+);
+
+CREATE TABLE integration_partners (
+  id UUID PRIMARY KEY,
+  contract_id UUID NOT NULL REFERENCES api_contracts(id),
+  partner_code VARCHAR(64) UNIQUE NOT NULL,
+  timezone_iana VARCHAR(64) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE
+);`,
+            apiDesign: `POST /api/v1/integrations/partner-sync
+Headers:
+  Authorization: Bearer <scoped_jwt>
+  X-Contract-Version: 2026.1
+  Idempotency-Key: mhr-sync-88210
+Request:
+{
+  "partner_code": "INTL_PARTNER_EU_04",
+  "batch_ref": "SYNC-2026-11-26-A",
+  "records_count": 120
+}
+Response 202 Accepted:
+{
+  "status": "QUEUED_FOR_VALIDATION",
+  "schema_validated": true,
+  "correlation_id": "req_9f41c8a2"
+}`,
+            security: [
+              'اعتبارسنجی سخت‌گیرانه ساختار داده در ورودی API برای جلوگیری از حملات تزریق و تغییر غیرمجاز فیلدها.',
+              'اعمال اصل حداقل دسترسی (Least Privilege)، ارتباطات امن و ثبت ردپای ممیزی برای تراکنش‌ها و تغییرات.',
+              'شفاف‌سازی معیارهای پذیرش، امنیت و SLA در مذاکرات و مستندات فنی مشترک با ذی‌نفعان بین‌المللی.'
+            ],
+            challenges: 'رفع ابهامات نیازمندی‌ها، استانداردسازی مدل داده‌ها و ایجاد تفاهم فنی دقیق میان تیم‌ها و شرکای بین‌المللی با پیش‌زمینه‌های متفاوت.',
+            decisions: 'تبدیل OpenAPI به مرجع رسمی قراردادهای سرویس در کنار نرمال‌سازی جداول پایگاه داده و ثبت مستندات فنی دو‌زبانه پیش از ورود به فاز پیاده‌سازی.'
+          },
+          screenshots: [
+            {
+              url: 'https://placehold.co/1200x700/171A1F/A88B62?text=Mehrsan+OpenAPI+Contract+%26+Normalized+Schema',
+              enCaption: 'Contract-First OpenAPI Architecture & Normalized Relational Core',
+              faCaption: 'معماری قراردادمحور OpenAPI و ساختار نرمال‌شده پایگاه داده در مهرسان'
+            },
+            {
+              url: 'https://placehold.co/1200x700/263E54/F8F8F6?text=API+Security+%26+International+Technical+Specs',
+              enCaption: 'API Security Controls & Cross-Border Stakeholder Alignment',
+              faCaption: 'کنترل‌های امنیتی API و هماهنگی مشخصات فنی بین‌المللی'
+            }
+          ]
+        },
+        {
+          slug: 'pancho-workflow-and-ops-engine',
+          domainKey: 'backend',
+          year: '2025',
+          faYear: '۱۴۰۴',
+          category: 'Workflow & Operations Backend · Event-Driven & Resilient',
+          faCategory: 'پانچو (Pancho) · بک‌اند جریان کاری و عملیاتی مقاوم',
+          stackSummary: ['Python', 'REST APIs', 'PostgreSQL', 'Event & Queue Pipeline'],
+          en: {
+            title: 'Pancho — Resilient Operational Workflow & Task Orchestration System',
+            tagline: 'Deterministic state-machine workflow engine designed for reliable task transitions, auditability, and fault-tolerant background processing.',
+            introduction: 'Pancho is an operational workflow and task orchestration system engineered to replace ad-hoc status updates and fragile scripts with explicit state transitions, atomic persistence, and traceable execution history.',
+            overview: 'Operational systems frequently suffer from out-of-order updates, silent retries, and ambiguous state changes when multiple actors or automated workers interact with shared records. Pancho enforces strict transition guards and structured event logging.',
+            features: [
+              'Explicit finite-state transition rules preventing invalid or out-of-order workflow mutations.',
+              'Atomic state persistence paired with outbox/queue event dispatch for downstream notifications and integrations.',
+              'Complete actor and timestamp history for every state change to support debugging and compliance.',
+              'Clean, versioned REST endpoints with predictable error envelopes and correlation tracking.'
+            ],
+            architecture: 'Service-oriented backend enforcing state invariants inside database transactions before emitting asynchronous jobs, isolating core workflow transitions from external side effects.',
+            databaseDesign: `CREATE TABLE workflow_tasks (
+  id UUID PRIMARY KEY,
+  reference_code VARCHAR(64) UNIQUE NOT NULL,
+  current_state VARCHAR(32) NOT NULL,
+  version INT NOT NULL DEFAULT 1,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE state_transitions (
+  id BIGSERIAL PRIMARY KEY,
+  task_id UUID NOT NULL REFERENCES workflow_tasks(id),
+  from_state VARCHAR(32) NOT NULL,
+  to_state VARCHAR(32) NOT NULL,
+  actor_ref VARCHAR(128) NOT NULL,
+  correlation_id VARCHAR(64) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_transitions_task_time ON state_transitions (task_id, created_at DESC);`,
+            apiDesign: `POST /api/v1/tasks/{task_id}/transitions
+Headers: { "Authorization": "Bearer <token>", "Idempotency-Key": "tr-5029-approve" }
+Request:
+{
+  "target_state": "APPROVED",
+  "expected_version": 3,
+  "note": "Verified operational checklist"
+}
+Response 200 OK:
+{
+  "task_id": "tsk_4410",
+  "previous_state": "PENDING_REVIEW",
+  "current_state": "APPROVED",
+  "version": 4
+}`,
+            security: [
+              'Role and state-aware transition guards blocking unauthorized actors or illegal state jumps.',
+              'Optimistic concurrency checks (expected_version) preventing lost updates under concurrent edits.',
+              'Immutable transition audit log with correlation IDs for end-to-end incident traceability.'
+            ],
+            challenges: 'Preventing race conditions and lost updates when two operators or background workers transition the same workflow record nearly simultaneously.',
+            decisions: 'Required versioned state transitions with atomic conditional updates and recorded every approved change in an append-only transition log.'
+          },
+          fa: {
+            title: 'پانچو (Pancho) — سامانه مدیریت جریان کاری و عملیات مقاوم در برابر خطا',
+            tagline: 'موتور جریان کاری مبتنی بر ماشین وضعیت برای انتقال مطمئن مراحل، ثبت تاریخچه دقیق و پردازش پس‌زمینه پایدار.',
+            introduction: 'پانچو یک سامانه مدیریت جریان کاری و هماهنگی عملیات است که برای جایگزینی تغییر وضعیت‌های پراکنده با قوانین انتقال مشخص، ثبت اتمیک و تاریخچه قابل رهگیری طراحی شده است.',
+            overview: 'در سامانه‌های عملیاتی، هم‌زمانی ویرایش‌ها یا تکرار درخواست‌ها بدون کنترل نسخه و وضعیت می‌تواند باعث پرش غیرمجاز مرحله‌ها یا از بین رفتن تغییرها شود. پانچو این قوانین را در هسته سیستم تثبیت می‌کند.',
+            features: [
+              'قوانین شفاف انتقال وضعیت برای جلوگیری از جابه‌جایی‌های نامعتبر یا خارج از ترتیب چرخه کاری.',
+              'ثبت اتمیک تغییر وضعیت در دیتابیس همراه با ارسال رویداد برای پردازش‌های پس‌زمینه و یکپارچه‌سازی.',
+              'نگهداری تاریخچه کامل هر انتقال وضعیت همراه با شناسه عامل و زمان وقوع برای عیب‌یابی آسان.',
+              'رابط‌های REST استاندارد با ساختار خطای یکنواخت و شناسه رهگیری (Correlation ID).'
+            ],
+            architecture: 'معماری سرویس‌محور که صحت تغییر وضعیت را درون تراکنش پایگاه داده تضمین می‌کند و اقدامات جانبی و صف‌ها را به صورت غیرهمزمان و جداگانه اجرا می‌نماید.',
+            databaseDesign: `CREATE TABLE workflow_tasks (
+  id UUID PRIMARY KEY,
+  reference_code VARCHAR(64) UNIQUE NOT NULL,
+  current_state VARCHAR(32) NOT NULL,
+  version INT NOT NULL DEFAULT 1,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE state_transitions (
+  id BIGSERIAL PRIMARY KEY,
+  task_id UUID NOT NULL REFERENCES workflow_tasks(id),
+  from_state VARCHAR(32) NOT NULL,
+  to_state VARCHAR(32) NOT NULL,
+  actor_ref VARCHAR(128) NOT NULL,
+  correlation_id VARCHAR(64) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_transitions_task_time ON state_transitions (task_id, created_at DESC);`,
+            apiDesign: `POST /api/v1/tasks/{task_id}/transitions
+Headers: { "Authorization": "Bearer <token>", "Idempotency-Key": "tr-5029-approve" }
+Request:
+{
+  "target_state": "APPROVED",
+  "expected_version": 3,
+  "note": "Verified operational checklist"
+}
+Response 200 OK:
+{
+  "task_id": "tsk_4410",
+  "previous_state": "PENDING_REVIEW",
+  "current_state": "APPROVED",
+  "version": 4
+}`,
+            security: [
+              'بررسی مجوز و وضعیت فعلی پیش از انجام هر انتقال برای جلوگیری از تغییرات غیرمجاز.',
+              'کنترل نسخه (expected_version) جهت جلوگیری از هم‌پوشانی و از دست رفتن تغییرات هم‌زمان.',
+              'ثبت تاریخچه غیرقابل تغییر انتقال‌ها برای شفافیت کامل و ممیزی عملیات.'
+            ],
+            challenges: 'جلوگیری از تداخل و از رفتن تغییرها زمانی که دو کاربر یا پردازشگر به صورت هم‌زمان روی یک رکورد جریان کاری اقدام می‌کنند.',
+            decisions: 'اعمال کنترل نسخه در به‌روزرسانی وضعیت‌ها و ثبت هر تغییر معتبر در جدول تاریخچه انتقال‌ها با شناسه رهگیری.'
+          },
+          screenshots: [
+            {
+              url: 'https://placehold.co/1200x700/171A1F/A88B62?text=Pancho+State+Machine+%26+Transition+Audit',
+              enCaption: 'Deterministic State Transitions & Optimistic Concurrency Control',
+              faCaption: 'انتقال‌های وضعیت قطعی و کنترل هم‌زمانی در سامانه پانچو'
+            },
+            {
+              url: 'https://placehold.co/1200x700/263E54/F8F8F6?text=Pancho+Workflow+Events+%26+REST+Contracts',
+              enCaption: 'Event Emission Pipeline & Versioned Task Endpoints',
+              faCaption: 'پایپ‌لاین انتشار رویدادها و قراردادهای REST مدیریت وظایف'
+            }
+          ]
+        },
+        {
+          slug: 'persian-normalizer-rust-crate',
+          domainKey: 'systems',
+          year: '2025',
+          faYear: '۱۴۰۴',
+          category: 'Open-Source Systems Library · Rust',
+          faCategory: 'کتابخانه متن‌باز سیستمی · Rust',
+          stackSummary: ['Rust', 'Unicode / UTF-8', 'Zero-Allocation', 'Cargo Crate'],
+          en: {
+            title: 'Persian Normalizer for Rust Programmers',
+            tagline: 'High-throughput, memory-safe Unicode & Persian text normalization crate engineered for search engines, NLP pipelines, and backend validators.',
+            introduction: 'An open-source Rust systems library designed to canonicalize Persian and Arabic script code points (such as Arabic Yeh/Kaf unification, ZWNJ handling, diacritic stripping, and digit normalization) with deterministic UTF-8 safety.',
+            overview: 'Inconsistent Persian character encoding—mixing Arabic vs. Persian characters, stray zero-width joiners, or mixed digit sets—breaks search indexing, token matching, deduplication, and input validation. Existing scripting-layer normalizers often incur heap churn and unclear byte/char boundary behavior.',
+            features: [
+              'Canonicalizes Arabic Yeh/Kaf variants, ZWNJ (U+200C) rules, diacritics, and Persian/Arabic/ASCII digits.',
+              'Zero-allocation fast-path checks when input strings are already normalized.',
+              'Explicit configuration flags so callers can tailor strictness for search, slugs, or validation.',
+              'Comprehensive property-style and edge-case Rust unit tests with idiomatic Cargo documentation.'
+            ],
+            architecture: 'Pure, side-effect-free Rust library crate structured around a configurable NormalizerConfig, a fast-path inspection pass, and a single-pass UTF-8 string builder to minimize allocations and avoid panics on multi-byte sequences.',
+            databaseDesign: `// Stateless Library Crate — No Relational Database Required
+// Optional Persistent Index / Search Pipeline Schema (PostgreSQL):
+CREATE TABLE normalized_documents (
+  id BIGSERIAL PRIMARY KEY,
+  raw_title TEXT NOT NULL,
+  normalized_title TEXT NOT NULL,
+  normalizer_version VARCHAR(16) NOT NULL DEFAULT '1.0.0'
+);
+
+CREATE INDEX idx_normalized_title_gin
+  ON normalized_documents USING gin (to_tsvector('simple', normalized_title));`,
+            apiDesign: `use persian_normalizer::{Normalizer, NormalizerConfig};
+
+let config = NormalizerConfig::default()
+    .unify_arabic_letters(true)
+    .normalize_digits_to_ascii(false)
+    .collapse_zwnj(true);
+
+let normalizer = Normalizer::new(config);
+let clean = normalizer.normalize("يک متن فارسي با ١٢٣ رقم");
+assert_eq!(clean, "یک متن فارسی با ۱۲۳ رقم");`,
+            security: [
+              'Memory-safe Rust implementation eliminating buffer overflows, use-after-free, and undefined behavior.',
+              'No unsafe blocks or external network/filesystem access inside the core normalization engine.',
+              'Bounded input processing with predictable linear time complexity O(n) to resist algorithmic DoS via crafted Unicode inputs.'
+            ],
+            challenges: 'Handling valid UTF-8 multi-byte boundaries, ZWNJ edge cases, and mixed script inputs cleanly without allocating unnecessary intermediate strings on already-clean text.',
+            decisions: 'Built an explicit configuration struct with a zero-allocation fast-path scan before allocating an output buffer, keeping the core crate dependency-light and deterministic.'
+          },
+          fa: {
+            title: 'نرمال‌ساز متن فارسی برای برنامه‌نویسان Rust',
+            tagline: 'کتابخانه متن‌باز و ایمن در حافظه با Rust برای نرمال‌سازی یونیکد و متن فارسی در موتورهای جستجو، پایپ‌لاین‌های NLP و اعتبارسنجی بک‌اند.',
+            introduction: 'یک کتابخانه متن‌باز سیستمی به زبان Rust که برای یکسان‌سازی کاراکترهای فارسی و عربی (مانند یکسان‌سازی ی و ک، مدیریت نیم‌فاصله ZWNJ، حذف اعراب و یکنواخت‌سازی ارقام) با حفظ کامل ایمنی UTF-8 طراحی شده است.',
+            overview: 'ناهمگونی نویسه‌های فارسی در ورودی‌های واقعی—مانند ترکیب حروف عربی و فارسی، نیم‌فاصله‌های نامنظم یا مجموعه‌های مختلف ارقام—باعث خطا در جستجو، تطابق کلیدواژه‌ها، تشخیص رکوردهای تکراری و اعتبارسنجی داده‌ها می‌شود.',
+            features: [
+              'یکسان‌سازی حروف ی و ک عربی/فارسی، قوانین نیم‌فاصله (ZWNJ)، اعراب و ارقام فارسی/عربی/لاتین.',
+              'مسیر سریع بدون تخصیص حافظه اضافی (Zero-Allocation) زمانی که متن از پیش نرمال‌شده باشد.',
+              'پیکربندی دقیق با NormalizerConfig برای تنظیم سطح سخت‌گیری متناسب با جستجو، اسلاگ یا اعتبارسنجی.',
+              'مجموعه تست‌های واحد Rust و مستندسازی استاندارد Cargo با رفتار کاملاً قابل پیش‌بینی.'
+            ],
+            architecture: 'کتابخانه خالص و بدون حالت جانبی در Rust مبتنی بر NormalizerConfig، بررسی سریع اولیه و ساخت تک‌مرحله‌ای خروجی UTF-8 برای کاهش تخصیص حافظه و جلوگیری از خطا در کاراکترهای چندبایتی.',
+            databaseDesign: `// کتابخانه سیستمی بدون نیاز به دیتابیس داخلی
+// نمونه ساختار جدول در موتور جستجو یا بک‌اند (PostgreSQL):
+CREATE TABLE normalized_documents (
+  id BIGSERIAL PRIMARY KEY,
+  raw_title TEXT NOT NULL,
+  normalized_title TEXT NOT NULL,
+  normalizer_version VARCHAR(16) NOT NULL DEFAULT '1.0.0'
+);
+
+CREATE INDEX idx_normalized_title_gin
+  ON normalized_documents USING gin (to_tsvector('simple', normalized_title));`,
+            apiDesign: `use persian_normalizer::{Normalizer, NormalizerConfig};
+
+let config = NormalizerConfig::default()
+    .unify_arabic_letters(true)
+    .normalize_digits_to_ascii(false)
+    .collapse_zwnj(true);
+
+let normalizer = Normalizer::new(config);
+let clean = normalizer.normalize("يک متن فارسي با ١٢٣ رقم");
+assert_eq!(clean, "یک متن فارسی با ۱۲۳ رقم");`,
+            security: [
+              'بهره‌گیری از تضمین‌های ایمنی حافظه در Rust برای حذف باگ‌های حافظه‌ای رایج در زبان‌های سطح پایین.',
+              'عدم استفاده از بلوک‌های unsafe یا دسترسی به شبکه و فایل در هسته نرمال‌سازی.',
+              'پیچیدگی زمانی خطی O(n) و رفتار قابل پیش‌بینی برای جلوگیری از کندی یا حملات DoS با ورودی‌های یونیکد حجیم.'
+            ],
+            challenges: 'مدیریت دقیق کاراکترهای چندبایتی UTF-8، نیم‌فاصله‌ها و متن‌های ترکیبی بدون ایجاد سربار حافظه روی رشته‌هایی که نیاز به تغییر ندارند.',
+            decisions: 'طراحی ساختار پیکربندی صریح همراه با مسیر بررسی سریع پیش از تخصیص رشته خروجی تا کتابخانه سبک، سریع و کاملاً قطعی باقی بماند.'
+          },
+          screenshots: [
+            {
+              url: 'https://placehold.co/1200x700/171A1F/A88B62?text=Persian+Normalizer+Rust+Crate+%26+UTF-8+Pipeline',
+              enCaption: 'Zero-Allocation Fast Path & Unicode Normalization Pipeline in Rust',
+              faCaption: 'مسیر سریع بدون تخصیص اضافی و پایپ‌لاین نرمال‌سازی یونیکد در Rust'
+            },
+            {
+              url: 'https://placehold.co/1200x700/263E54/F8F8F6?text=Cargo+API+%26+Search+Indexing+Integration',
+              enCaption: 'Ergonomic Cargo Crate API & Search Index Readiness',
+              faCaption: 'رابط برنامه‌نویسی Cargo Crate و آماده‌سازی متن برای ایندکس جستجو'
+            }
+          ]
+        }
+      ]
+    };
+
+    /* ==========================================================================
+       STATE & UTILITIES (Synchronized with index.html & course.html)
+       ========================================================================== */
+    const state = {
+      lang: document.documentElement.getAttribute('lang') || 'en',
+      theme: document.documentElement.getAttribute('data-theme') || 'light',
+      activeFilter: 'all'
+    };
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function localizeDigits(str, lang = state.lang) {
+      if (str === null || str === undefined) return '';
+      const text = String(str);
+      if (lang !== 'fa') return text;
+      return text.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    }
+
+    function formatText(str, lang = state.lang) {
+      return escapeHTML(localizeDigits(str, lang));
+    }
+
+    function applyTheme(theme) {
+      state.theme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('parsa_theme', theme);
+
+      const sunIcon = document.getElementById('icon-sun');
+      const moonIcon = document.getElementById('icon-moon');
+      if (theme === 'dark') {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    function applyLanguage(lang) {
+      state.lang = lang;
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+      localStorage.setItem('parsa_lang', lang);
+
+      document.getElementById('lang-label').textContent = lang === 'en' ? 'FA' : 'EN';
+      syncSectionTypewritersLanguage();
+      renderAll();
+    }
+
+    /* ==========================================================================
+       RENDERERS
+       ========================================================================== */
+    function renderNavigation() {
+      const desktopNav = document.getElementById('desktop-nav');
+      const mobileNavLinks = document.getElementById('mobile-nav-links');
+      const isEn = state.lang === 'en';
+
+      const logoEn = document.getElementById('brand-logo-en');
+      const logoFa = document.getElementById('brand-logo-fa');
+      if (logoEn && logoFa) {
+        logoEn.classList.toggle('hidden', !isEn);
+        logoFa.classList.toggle('hidden', isEn);
+      }
+
+      const navbarBrandEl = document.getElementById('navbar-brand-name');
+      if (navbarBrandEl) {
+        const brandText = isEn ? 'PARSA' : 'پارسا';
+        navbarBrandEl.className = isEn ? 'font-mono-tech font-bold text-xl tracking-tight' : 'font-bold text-xl tracking-tight';
+        navbarBrandEl.innerHTML = `${escapeHTML(brandText)}<span style="color: var(--accent-secondary);">.</span>`;
+      }
+
+      desktopNav.innerHTML = PROJECTS_PAGE_DATA.nav.map(item => `
+        <a href="${item.href}" class="px-2.5 py-1.5 rounded-md text-xs xl:text-sm font-medium transition-colors flex items-center gap-1.5 ${item.active ? 'nav-active-pill font-semibold' : 'hover:bg-black/5 dark:hover:bg-white/5'}">
+          <span>${isEn ? item.en : item.fa}</span>
+        </a>
+      `).join('');
+
+      mobileNavLinks.innerHTML = PROJECTS_PAGE_DATA.nav.map(item => `
+        <a href="${item.href}" class="mobile-nav-item p-3 rounded-lg surface-card text-sm font-medium flex items-center gap-2.5 ${item.active ? 'nav-active-pill' : ''}">
+          <span class="font-mono-tech text-xs" style="color: var(--accent-secondary);">${formatText(item.num)}</span>
+          <span>${isEn ? item.en : item.fa}</span>
+        </a>
+      `).join('');
+    }
+
+    function renderHeroAndFilters() {
+      const t = PROJECTS_PAGE_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const year = document.getElementById('current-year')?.textContent || String(new Date().getFullYear());
+
+      document.querySelector('#breadcrumb-home span').textContent = localizeDigits(t.breadcrumbHome);
+      document.getElementById('breadcrumb-current').textContent = localizeDigits(t.breadcrumbCurrent);
+      document.getElementById('page-heading').textContent = localizeDigits(t.pageHeading);
+      document.getElementById('hero-subtitle').textContent = localizeDigits(t.heroSubtitle);
+      document.getElementById('page-summary').textContent = localizeDigits(t.pageSummary);
+
+      document.getElementById('project-metrics').innerHTML = t.metrics.map(m => `
+        <div class="surface-card p-4">
+          <div class="font-mono-tech text-lg sm:text-xl font-bold mb-1" style="color: var(--accent-secondary);">${formatText(m.value)}</div>
+          <div class="text-xs" style="color: var(--text-secondary);">${formatText(m.label)}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('archive-heading').textContent = localizeDigits(t.archiveHeading);
+
+      document.getElementById('domain-filters').innerHTML = Object.entries(t.filters).map(([key, label]) => {
+        const isActive = state.activeFilter === key;
+        return `
+          <button
+            type="button"
+            data-filter="${key}"
+            class="filter-btn px-3.5 py-2 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${isActive ? 'btn-primary border-transparent' : 'btn-secondary'}"
+          >
+            ${formatText(label)}
+          </button>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.activeFilter = btn.getAttribute('data-filter');
+          renderHeroAndFilters();
+          renderProjectsGrid();
+        });
+      });
+
+      // CTA & Footer
+      document.getElementById('cta-kicker').textContent = localizeDigits(t.ctaKicker);
+      document.getElementById('cta-title').textContent = localizeDigits(t.ctaTitle);
+      document.getElementById('cta-desc').textContent = localizeDigits(t.ctaDesc);
+      document.querySelector('#cta-primary-btn span').textContent = localizeDigits(t.ctaPrimaryBtn);
+      document.getElementById('cta-secondary-btn').textContent = localizeDigits(t.ctaSecondaryBtn);
+      document.getElementById('footer-tagline').textContent = localizeDigits(t.footerTagline);
+
+      const footerBrandEl = document.getElementById('footer-brand-name');
+      if (footerBrandEl) {
+        const brandText = isEn ? 'PARSA' : (t.footerBrand || 'پارسا');
+        footerBrandEl.className = isEn ? 'font-mono-tech font-bold text-sm' : 'font-bold text-sm';
+        footerBrandEl.innerHTML = `${formatText(brandText)}<span style="color: var(--accent-secondary);">.</span>`;
+      }
+
+      const footerCopyEl = document.getElementById('footer-copyright');
+      if (footerCopyEl) {
+        const faYear = localizeDigits(year, 'fa');
+        footerCopyEl.textContent = isEn
+          ? `© ${year} PARSA. All rights reserved.`
+          : (typeof t.footerCopyright === 'function' ? localizeDigits(t.footerCopyright(faYear), 'fa') : `© ${faYear} پارسا. تمامی حقوق محفوظ است.`);
+      }
+    }
+
+    function renderProjectsGrid() {
+      const t = PROJECTS_PAGE_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const filtered = state.activeFilter === 'all'
+        ? PROJECTS_PAGE_DATA.projects
+        : PROJECTS_PAGE_DATA.projects.filter(p => p.domainKey === state.activeFilter);
+
+      document.getElementById('projects-count').textContent = localizeDigits(t.projectsCountLabel(filtered.length));
+
+      document.getElementById('projects-grid').innerHTML = filtered.map(project => {
+        const content = isEn ? project.en : project.fa;
+        const categoryLabel = isEn ? project.category : (project.faCategory || project.category);
+        const yearLabel = isEn ? project.year : (project.faYear || project.year);
+
+        return `
+          <article class="surface-card overflow-hidden flex flex-col justify-between group">
+            <div>
+              <div class="aspect-[16/9] overflow-hidden hairline-b bg-black/10">
+                <img
+                  src="${project.screenshots[0].url}"
+                  alt="${escapeHTML(content.title)}"
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+
+              <div class="p-6 sm:p-7">
+                <div class="flex items-center justify-between gap-2 text-xs font-mono-tech mb-3" style="color: var(--accent-secondary);">
+                  <span>${formatText(categoryLabel)}</span>
+                  <span>${formatText(yearLabel)}</span>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-bold mb-2.5">${formatText(content.title)}</h3>
+                <p class="text-sm mb-5" style="color: var(--text-secondary);">${formatText(content.tagline)}</p>
+
+                <div class="flex flex-wrap gap-1.5 mb-6">
+                  ${project.stackSummary.map(tech => `<span class="tech-badge">${formatText(tech)}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="px-6 sm:px-7 pb-6">
+              <button
+                type="button"
+                data-project-slug="${project.slug}"
+                class="open-project-btn btn-primary w-full py-3 px-4 text-sm font-medium inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>${formatText(t.viewCaseStudy)}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="rtl:rotate-180">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.open-project-btn').forEach(btn => {
+        btn.addEventListener('click', () => openProjectCaseStudy(btn.getAttribute('data-project-slug')));
+      });
+    }
+
+    /* ==========================================================================
+       CASE STUDY MODAL (ALL 11 REQUIRED SECTIONS)
+       ========================================================================== */
+    function openProjectCaseStudy(slug) {
+      const project = PROJECTS_PAGE_DATA.projects.find(p => p.slug === slug);
+      if (!project) return;
+
+      const t = PROJECTS_PAGE_DATA.ui[state.lang];
+      const isEn = state.lang === 'en';
+      const content = isEn ? project.en : project.fa;
+      const labels = t.caseStudyLabels;
+      const categoryLabel = isEn ? project.category : (project.faCategory || project.category);
+      const yearLabel = isEn ? project.year : (project.faYear || project.year);
+
+      document.getElementById('modal-case-study-tag').textContent = t.modalBadge;
+      document.getElementById('modal-project-title').textContent = localizeDigits(content.title);
+
+      const bodyHTML = `
+        <!-- Meta Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-6 hairline-b">
+          <div>
+            <span class="font-mono-tech text-xs block mb-1" style="color: var(--accent-secondary);">${formatText(categoryLabel)} · ${formatText(yearLabel)}</span>
+            <h2 class="text-2xl sm:text-3xl font-bold">${formatText(content.title)}</h2>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            ${project.stackSummary.map(s => `<span class="tech-badge">${formatText(s)}</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- 01. Introduction & 02. Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.introduction)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.introduction)}</p>
+          </div>
+          <div class="surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.overview)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.overview)}</p>
+          </div>
+        </div>
+
+        <!-- 03. Features -->
+        <div>
+          <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.features)}</h4>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${content.features.map(f => `
+              <li class="surface-card p-4 text-sm flex items-start gap-2.5">
+                <span class="font-mono-tech font-bold" style="color: var(--accent-secondary);">&check;</span>
+                <span>${formatText(f)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <!-- 04. Architecture & 05. Tech Stack -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.architecture)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.architecture)}</p>
+          </div>
+          <div class="lg:col-span-4 surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.techStack)}</h4>
+            <div class="flex flex-wrap gap-2">
+              ${project.stackSummary.map(s => `<span class="tech-badge">${formatText(s)}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- 06. Database Design -->
+        <div>
+          <div class="flex items-center justify-between mb-2.5">
+            <h4 class="font-mono-tech text-xs uppercase" style="color: var(--accent-secondary);">${formatText(labels.databaseDesign)}</h4>
+            <button type="button" class="copy-code-btn text-xs font-mono-tech px-2.5 py-1 rounded border cursor-pointer" style="border-color: var(--border-strong);">Copy SQL</button>
+          </div>
+          <pre class="code-window p-4 text-xs sm:text-[13px] font-mono-tech overflow-x-auto leading-relaxed"><code>${escapeHTML(content.databaseDesign)}</code></pre>
+        </div>
+
+        <!-- 07. API Design -->
+        <div>
+          <div class="flex items-center justify-between mb-2.5">
+            <h4 class="font-mono-tech text-xs uppercase" style="color: var(--accent-secondary);">${formatText(labels.apiDesign)}</h4>
+            <button type="button" class="copy-code-btn text-xs font-mono-tech px-2.5 py-1 rounded border cursor-pointer" style="border-color: var(--border-strong);">Copy API Spec</button>
+          </div>
+          <pre class="code-window p-4 text-xs sm:text-[13px] font-mono-tech overflow-x-auto leading-relaxed"><code>${escapeHTML(content.apiDesign)}</code></pre>
+        </div>
+
+        <!-- 08. Security -->
+        <div class="surface-card p-5 sm:p-6">
+          <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.security)}</h4>
+          <ul class="space-y-2 text-sm">
+            ${content.security.map(sec => `
+              <li class="flex items-start gap-2.5">
+                <span class="font-mono-tech" style="color: var(--accent-secondary);">[SEC]</span>
+                <span>${formatText(sec)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <!-- 09. Screenshots -->
+        <div>
+          <h4 class="font-mono-tech text-xs uppercase mb-3" style="color: var(--accent-secondary);">${formatText(labels.screenshots)}</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${project.screenshots.map(shot => `
+              <figure class="surface-card overflow-hidden">
+                <img src="${shot.url}" alt="${escapeHTML(isEn ? shot.enCaption : shot.faCaption)}" loading="lazy" class="w-full aspect-video object-cover" />
+                <figcaption class="p-3 text-xs" style="color: var(--text-secondary);">${formatText(isEn ? shot.enCaption : shot.faCaption)}</figcaption>
+              </figure>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 10. Challenges & 11. Decisions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.challenges)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.challenges)}</p>
+          </div>
+          <div class="surface-card p-5 sm:p-6">
+            <h4 class="font-mono-tech text-xs uppercase mb-2.5" style="color: var(--accent-secondary);">${formatText(labels.decisions)}</h4>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">${formatText(content.decisions)}</p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('project-modal-body').innerHTML = bodyHTML;
+      document.getElementById('project-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      document.querySelectorAll('.copy-code-btn').forEach((btn, idx) => {
+        btn.addEventListener('click', () => {
+          const codeBlocks = document.getElementById('project-modal-body').querySelectorAll('pre code');
+          if (codeBlocks[idx]) {
+            copyTextFallback(codeBlocks[idx].textContent, btn);
+          }
+        });
+      });
+    }
+
+    function closeProjectCaseStudy() {
+      const modal = document.getElementById('project-modal');
+      if (!modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function copyTextFallback(text, triggerBtn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        const originalText = triggerBtn.textContent;
+        triggerBtn.textContent = 'Copied!';
+        setTimeout(() => { triggerBtn.textContent = originalText; }, 1800);
+      } catch (err) {}
+      document.body.removeChild(textarea);
+    }
+
+    /* ==========================================================================
+       INITIALIZATION, SCROLL CONTROLLER & TYPEWRITER
+       ========================================================================== */
+    function renderAll() {
+      renderNavigation();
+      renderHeroAndFilters();
+      renderProjectsGrid();
+    }
+
+    function setMobileMenuState(isOpen) {
+      const nav = document.getElementById('mobile-nav');
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const iconMenu = document.getElementById('icon-menu');
+      const iconClose = document.getElementById('icon-close');
+
+      nav.classList.toggle('hidden', !isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      iconMenu.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    }
+
+    const typewriterControllers = [];
+
+    function getTypewriterTargetText(el) {
+      const lang = state.lang || 'en';
+      if (lang === 'fa' && el.hasAttribute('data-typewriter-fa')) return el.getAttribute('data-typewriter-fa');
+      if (lang === 'en' && el.hasAttribute('data-typewriter-en')) return el.getAttribute('data-typewriter-en');
+      return el.getAttribute('data-typewriter') || '';
+    }
+
+    function syncSectionTypewritersLanguage() {
+      typewriterControllers.forEach(ctrl => ctrl.resetForCurrentLanguage());
+    }
+
+    function initSectionTypewriters() {
+      document.querySelectorAll('[data-typewriter]').forEach((el, index) => {
+        el.innerHTML = `<span class="tw-text"></span><span class="typewriter-cursor" aria-hidden="true"></span>`;
+        const textSpan = el.querySelector('.tw-text');
+        let fullText = getTypewriterTargetText(el);
+        let charIndex = 0;
+        let isDeleting = false;
+        let timerId = null;
+
+        function scheduleNext(fn, delay) {
+          if (timerId !== null) clearTimeout(timerId);
+          timerId = setTimeout(fn, delay);
+        }
+
+        function tick() {
+          if (!isDeleting) {
+            charIndex = Math.min(charIndex + 1, fullText.length);
+            textSpan.textContent = fullText.slice(0, charIndex);
+            if (charIndex === fullText.length) {
+              isDeleting = true;
+              scheduleNext(tick, 3500);
+              return;
+            }
+            scheduleNext(tick, 75);
+          } else {
+            charIndex = Math.max(charIndex - 1, 0);
+            textSpan.textContent = fullText.slice(0, charIndex);
+            if (charIndex === 0) {
+              isDeleting = false;
+              scheduleNext(tick, 600);
+              return;
+            }
+            scheduleNext(tick, 40);
+          }
+        }
+
+        function resetForCurrentLanguage() {
+          fullText = getTypewriterTargetText(el);
+          charIndex = 0;
+          isDeleting = false;
+          textSpan.textContent = '';
+          scheduleNext(tick, 120);
+        }
+
+        typewriterControllers.push({ resetForCurrentLanguage });
+        scheduleNext(tick, index * 220);
+      });
+    }
+
+    function initCustomScrollController() {
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+      const percentLabel = document.getElementById('scroll-percent-label');
+      if (!scrollTopBtn || !percentLabel) return;
+
+      let ticking = false;
+      function updateScrollMetrics() {
+        ticking = false;
+        const docEl = document.documentElement;
+        const scrollTop = window.scrollY || docEl.scrollTop || 0;
+        const scrollableHeight = Math.max(0, docEl.scrollHeight - window.innerHeight);
+        const percentage = scrollableHeight > 0 ? Math.round(Math.min(1, Math.max(0, scrollTop / scrollableHeight)) * 100) : 0;
+
+        percentLabel.textContent = `${percentage}%`;
+        scrollTopBtn.classList.toggle('is-visible', scrollTop > 320);
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(updateScrollMetrics);
+        }
+      }, { passive: true });
+
+      scrollTopBtn.addEventListener('click', () => {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      });
+
+      updateScrollMetrics();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+
+      applyTheme(state.theme);
+      applyLanguage(state.lang);
+
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        applyTheme(state.theme === 'light' ? 'dark' : 'light');
+      });
+
+      document.getElementById('lang-toggle').addEventListener('click', () => {
+        applyLanguage(state.lang === 'en' ? 'fa' : 'en');
+      });
+
+      document.getElementById('mobile-menu-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !document.getElementById('mobile-nav').classList.contains('hidden');
+        setMobileMenuState(!isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        const nav = document.getElementById('mobile-nav');
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        if (!nav.classList.contains('hidden') && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+          setMobileMenuState(false);
+        }
+      });
+
+      document.getElementById('close-project-modal').addEventListener('click', closeProjectCaseStudy);
+      document.getElementById('project-modal-backdrop').addEventListener('click', closeProjectCaseStudy);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProjectCaseStudy();
+      });
+
+      // Direct Hash Link Support (e.g. projects.html#project/avenlingo-learning-platform)
+      if (window.location.hash.startsWith('#project/')) {
+        const slug = window.location.hash.replace('#project/', '');
+        openProjectCaseStudy(slug);
+      }
+
+      initSectionTypewriters();
+      initCustomScrollController();
+    });
+  </script>
+</body>
+</html>
