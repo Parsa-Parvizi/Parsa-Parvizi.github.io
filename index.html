@@ -17,8 +17,6 @@
   <meta property="og:url" content="https://parsa-parvizi.github.io/" />
   <meta property="og:title" content="PARSA. Software Engineer | Backend & Architecture" />
   <meta property="og:description" content="Backend engineering, system architecture, distributed systems, and application security. Explore my projects, technical articles, and software book reviews." />
-  <!-- <meta property="og:image" content="https://parsa-parvizi.github.io/parsa-social-card-v1.png" /> -->
-  <!-- <meta property="og:image:secure_url" content="https://parsa-parvizi.github.io/parsa-social-card-v1.png" /> -->
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -30,7 +28,6 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PARSA. Software Engineer | Backend & Architecture" />
   <meta name="twitter:description" content="Backend engineering, system architecture, distributed systems, and application security. Explore my projects and technical writing." />
-  <!-- <meta name="twitter:image" content="https://parsa-parvizi.github.io/parsa-social-card-v1.png" /> -->
   <meta name="twitter:image:alt" content="PARSA. Software Engineer | Backend & Architecture" />
 
   <!-- Prevent Theme & Language FOUC (Flash of Unstyled Content) -->
@@ -1573,8 +1570,7 @@
 
           <!-- Quick Actions -->
           <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-            <a href="#projects" id="hero-cta-primary" class="btn-primary px-6 py-3.5 text-sm font-medium inline-flex items-center gap-2">
-              <span></span>
+              <a href="projects.html" id="hero-cta-primary" class="btn-primary px-6 py-3.5 text-sm font-medium inline-flex items-center gap-2">              <span></span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="rtl:rotate-180">
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
@@ -2060,9 +2056,10 @@
         { id: 'home', num: '01', en: 'Home', fa: 'خانه' },
         { id: 'about', num: '02', en: 'About', fa: 'درباره من' },
         { id: 'skills', num: '03', en: 'Skills', fa: 'مهارت‌ها' },
-        { id: 'projects', num: '04', en: 'Projects', fa: 'پروژه‌ها' },
+        { id: 'projects', num: '04', en: 'Projects', fa: 'پروژه‌ها', href: 'projects.html' },
         { id: 'articles', num: '05', en: 'Articles', fa: 'مقالات' },
         { id: 'books', num: '06', en: 'Book Reviews', fa: 'مرور کتاب‌ها' },
+        { id: 'tutorial', num: '07', en: 'Tutorial', fa: 'آموزش‌ها', href: 'course.html' },
         { id: 'contact', num: '07', en: 'Contact', fa: 'ارتباط' }
       ],
 
@@ -3190,14 +3187,14 @@ Headers: { "X-Edge-Node": "edge-gpu-gate-01", "Idempotency-Key": "det-98412" }
       }
 
       const navHTML = PORTFOLIO_DATA.nav.map(item => `
-        <a href="#${item.id}" class="px-2.5 py-1.5 rounded-md text-xs xl:text-sm font-medium transition-colors hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1.5">
+        <a href="${item.href || '#' + item.id}" class="px-2.5 py-1.5 rounded-md text-xs xl:text-sm font-medium transition-colors hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1.5">
           <span>${isEn ? item.en : item.fa}</span>
         </a>
       `).join('');
 
       desktopNav.innerHTML = navHTML;
       mobileNavLinks.innerHTML = PORTFOLIO_DATA.nav.map(item => `
-        <a href="#${item.id}" class="mobile-nav-item p-3 rounded-lg surface-card text-sm font-medium flex items-center gap-2.5">
+        <a href="${item.href || '#' + item.id}" class="mobile-nav-item p-3 rounded-lg surface-card text-sm font-medium flex items-center gap-2.5">
           <span class="font-mono-tech text-xs" style="color: var(--accent-secondary);">${item.num}</span>
           <span>${isEn ? item.en : item.fa}</span>
         </a>
